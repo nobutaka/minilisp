@@ -579,17 +579,17 @@ static Obj *read_expr(void *root) {
 }
 
 // Prints the given object.
-static void print(Obj *obj) {
+static void print(Obj *obj, bool readably) {
     switch (obj->type) {
     case TCELL:
         printf("(");
         for (;;) {
-            print(obj->car);
+            print(obj->car, readably);
             if (obj->cdr == Nil)
                 break;
             if (obj->cdr->type != TCELL) {
                 printf(" . ");
-                print(obj->cdr);
+                print(obj->cdr, readably);
                 break;
             }
             printf(" ");
@@ -950,7 +950,7 @@ static Obj *prim_macroexpand(void *root, Obj **env, Obj **list) {
 static Obj *prim_println(void *root, Obj **env, Obj **list) {
     DEFINE1(tmp);
     *tmp = (*list)->car;
-    print(eval(root, env, tmp));
+    print(eval(root, env, tmp), true);
     printf("\n");
     return Nil;
 }
@@ -1074,7 +1074,7 @@ int main(int argc, char **argv) {
             error("Stray close parenthesis");
         if (*expr == Dot)
             error("Stray dot");
-        print(eval(root, env, expr));
+        print(eval(root, env, expr), true);
         printf("\n");
     }
 }
