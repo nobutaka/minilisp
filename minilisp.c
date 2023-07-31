@@ -604,7 +604,7 @@ static void print(Obj *obj, bool readably) {
         return
     CASE(TNUMBER, "%.15g", obj->value);
     CASE(TSYMBOL, "%s", obj->name);
-    CASE(TSTRING, "\"%s\"", obj->str);
+    CASE(TSTRING, readably ? "\"%s\"" : "%s", obj->str);
     CASE(TPOINTER, "<pointer>");
     CASE(TPRIMITIVE, "<primitive>");
     CASE(TFUNCTION, "<function>");
