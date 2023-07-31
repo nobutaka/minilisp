@@ -159,5 +159,6 @@ run macroexpand '(if (= x 0) (print x))' "
 run recursion 55 '(defun f (x) (if (= x 0) 0 (+ (f (+ x -1)) x))) (f 10)'
 
 # Libraries
+run princ 'foo()' '(princ "foo")'
 run fopen '<pointer>' '(fopen "test.sh" "r")'
 run fopen '()' '(fopen "missing" "r")'
