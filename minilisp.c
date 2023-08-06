@@ -998,6 +998,15 @@ static Obj *prim_eq(void *root, Obj **env, Obj **list) {
     return values->car == values->cdr->car ? True : Nil;
 }
 
+// (listp expr)
+static Obj *prim_listp(void *root, Obj **env, Obj **list) {
+    if (length(*list) != 1)
+        error("Malformed listp");
+    DEFINE1(tmp);
+    *tmp = (*list)->car;
+    return is_list(eval(root, env, tmp)) ? True : Nil;
+}
+
 // (fopen <string> <string>)
 static Obj *prim_fopen(void *root, Obj **env, Obj **list) {
     if (length(*list) != 2)
@@ -1043,6 +1052,7 @@ static void define_primitives(void *root, Obj **env) {
     add_primitive(root, env, "if", prim_if);
     add_primitive(root, env, "=", prim_num_eq);
     add_primitive(root, env, "eq", prim_eq);
+    add_primitive(root, env, "listp", prim_listp);
     add_primitive(root, env, "println", prim_println);
     add_primitive(root, env, "princ", prim_princ);
     add_primitive(root, env, "fopen", prim_fopen);

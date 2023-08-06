@@ -102,6 +102,12 @@ run eq '()' "(eq 'foo 'bar)"
 run eq '()' '(eq "foo" "foo")'
 run eq '()' "(eq + 'bar)"
 
+# listp
+run listp t "(listp (cons 'a 'b))"
+run listp t "(listp '())"
+run listp '()' "(listp 1)"
+run listp '()' "(listp 'a)"
+
 # gensym
 run gensym G__0 '(gensym)'
 run gensym '()' "(eq (gensym) 'G__0)"
