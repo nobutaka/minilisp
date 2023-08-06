@@ -105,7 +105,7 @@ run eq '()' "(eq + 'bar)"
 # listp
 run listp t "(listp (cons 'a 'b))"
 run listp t "(listp '())"
-run listp '()' "(listp 1)"
+run listp '()' '(listp 1)'
 run listp '()' "(listp 'a)"
 
 # gensym
