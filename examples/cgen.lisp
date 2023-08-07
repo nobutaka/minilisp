@@ -8,11 +8,13 @@
   (if text
       (if (not (listp text))
           (princ text)
-          (write-tree (car text))
-          (write-tree (cdr text)))))
+        (write-tree (car text))
+        (write-tree (cdr text)))))
 
-(defun genadd (fname)
-  (list "add_primitive(root, env, \"" fname "\", prim_" fname ");\n"))
+;;;;;;;;;;
 
-(write-tree (genadd 'fopen))
-(write-tree (genadd 'fclose))
+(defun add-prim (name)
+  (list "add_primitive(root, env, \"" name "\", prim_" name ");\n"))
+
+(write-tree (add-prim 'fopen))
+(write-tree (add-prim 'fclose))
