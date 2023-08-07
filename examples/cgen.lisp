@@ -1,13 +1,18 @@
-(defun map (lis fn)
-  (if lis
-    (cons (fn (car lis))
-	  (map (cdr lis) fn))))
+(defun list (x . y)
+  (cons x y))
 
-(defun princl (a . rest)
-  (map (cons a rest) princ))
+(defun not (x)
+  (if x () t))
+
+(defun write-tree (text)
+  (if text
+      (if (not (listp text))
+          (princ text)
+          (write-tree (car text))
+          (write-tree (cdr text)))))
 
 (defun genadd (fname)
-  (princl "add_primitive(root, env, \"" fname "\", prim_" fname ");\n"))
+  (list "add_primitive(root, env, \"" fname "\", prim_" fname ");\n"))
 
-(genadd 'fopen)
-(genadd 'fclose)
+(write-tree (genadd 'fopen))
+(write-tree (genadd 'fclose))
