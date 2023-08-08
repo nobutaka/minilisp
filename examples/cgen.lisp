@@ -13,8 +13,10 @@
 
 ;;;;;;;;;;
 
+(define tab "    ")
+
 (defun add-prim (name)
-  (list "add_primitive(root, env, \"" name "\", prim_" name ");\n"))
+  (list tab "add_primitive(root, env, \"" name "\", prim_" name ");\n"))
 
 (write-tree (add-prim 'fopen))
 (write-tree (add-prim 'fclose))
