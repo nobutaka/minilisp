@@ -1007,18 +1007,6 @@ static Obj *prim_listp(void *root, Obj **env, Obj **list) {
     return is_list(eval(root, env, tmp)) ? True : Nil;
 }
 
-// (fopen <string> <string>)
-static Obj *prim_fopen(void *root, Obj **env, Obj **list) {
-    if (length(*list) != 2)
-        error("Malformed fopen");
-    Obj *args = eval_list(root, env, list);
-    Obj *path = args->car;
-    Obj *mode = args->cdr->car;
-    if (path->type != TSTRING || mode->type != TSTRING)
-        error("Parameters must be strings");
-    return make_pointer(root, fopen(path->str, mode->str));
-}
-
 static void add_primitive(void *root, Obj **env, char *name, Primitive *fn) {
     DEFINE2(sym, prim);
     *sym = intern(root, name);
@@ -1055,6 +1043,25 @@ static void define_primitives(void *root, Obj **env) {
     add_primitive(root, env, "listp", prim_listp);
     add_primitive(root, env, "println", prim_println);
     add_primitive(root, env, "princ", prim_princ);
+}
+
+//======================================================================
+// Library functions
+//======================================================================
+
+// (fopen <string> <string>)
+static Obj *prim_fopen(void *root, Obj **env, Obj **list) {
+    if (length(*list) != 2)
+        error("Malformed fopen");
+    Obj *args = eval_list(root, env, list);
+    Obj *path = args->car;
+    Obj *mode = args->cdr->car;
+    if (path->type != TSTRING || mode->type != TSTRING)
+        error("Parameters must be strings");
+    return make_pointer(root, fopen(path->str, mode->str));
+}
+
+static void define_library(void *root, Obj **env) {
     add_primitive(root, env, "fopen", prim_fopen);
 }
 
@@ -1076,13 +1083,14 @@ int main(int argc, char **argv) {
     // Memory allocation
     memory = alloc_semispace();
 
-    // Constants and primitives
+    // Constants, primitives and library
     Symbols = Nil;
     void *root = NULL;
     DEFINE2(env, expr);
     *env = make_env(root, &Nil, &Nil);
     define_constants(root, env);
     define_primitives(root, env);
+    define_library(root, env);
 
     // The main loop
     for (;;) {
