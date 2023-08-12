@@ -13,23 +13,22 @@
 
 ;;;;;;;;;;
 
-(defun def-prim ()
+(defun def-prim (name)
   (list
-    "// (fopen <string> <string>)\n"
-    "static Obj *prim_fopen(void *root, Obj **env, Obj **list) {\n"
-    "    if (length(*list) != 2)\n"
-    "        error(\"Malformed fopen\");\n"
-    "    Obj *args = eval_list(root, env, list);\n"
-    "    Obj *path = args->car;\n"
-    "    Obj *mode = args->cdr->car;\n"
-    "    if (path->type != TSTRING || mode->type != TSTRING)\n"
-    "        error(\"Parameters must be strings\");\n"
-    "    return make_pointer(root, fopen(path->str, mode->str));\n"
-    "}\n"))
+    (list "// (" name " <string> <string>)\n")
+    (list "static Obj *prim_" name "(void *root, Obj **env, Obj **list) {\n")
+          "    if (length(*list) != 2)\n"
+    (list "        error(\"Malformed " name "\");\n")
+          "    Obj *args = eval_list(root, env, list);\n"
+          "    Obj *path = args->car;\n"
+          "    Obj *mode = args->cdr->car;\n"
+          "    if (path->type != TSTRING || mode->type != TSTRING)\n"
+          "        error(\"Parameters must be strings\");\n"
+    (list "    return make_pointer(root, " name "(path->str, mode->str));\n")
+          "}\n"))
 
 (defun add-prim (name)
-  (list
-    "    add_primitive(root, env, \"" name "\", prim_" name ");\n"))
+  (list "    add_primitive(root, env, \"" name "\", prim_" name ");\n"))
 
 (defun def-lib ()
   (list
@@ -39,6 +38,6 @@
 
 ;;;;;;;;;;
 
-(write-tree (def-prim))
+(write-tree (def-prim 'fopen))
 (princ "\n")
 (write-tree (def-lib))
