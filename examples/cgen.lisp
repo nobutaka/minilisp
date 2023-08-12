@@ -18,5 +18,11 @@
 (defun add-prim (name)
   (list tab "add_primitive(root, env, \"" name "\", prim_" name ");\n"))
 
-(write-tree (add-prim 'fopen))
-(write-tree (add-prim 'fclose))
+(defun def-lib ()
+  (list
+    "static void define_library(void *root, Obj **env) {\n"
+      (add-prim 'fopen)
+      (add-prim 'fclose)
+    "}\n"))
+
+(write-tree (def-lib))
