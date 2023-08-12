@@ -1080,6 +1080,9 @@ int main(int argc, char **argv) {
     debug_gc = getEnvFlag("MINILISP_DEBUG_GC");
     always_gc = getEnvFlag("MINILISP_ALWAYS_GC");
 
+    // Other flags
+    bool no_print = getEnvFlag("MINILISP_NO_PRINT");
+
     // Memory allocation
     memory = alloc_semispace();
 
@@ -1101,7 +1104,10 @@ int main(int argc, char **argv) {
             error("Stray close parenthesis");
         if (*expr == Dot)
             error("Stray dot");
-        print(eval(root, env, expr), true);
+        Obj *obj = eval(root, env, expr);
+        if (no_print)
+            continue;
+        print(obj, true);
         printf("\n");
     }
 }
