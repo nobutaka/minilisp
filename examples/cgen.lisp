@@ -4,6 +4,11 @@
 (defun not (x)
   (if x () t))
 
+(defun map (lis fn)
+  (if lis
+      (cons (fn (car lis))
+            (map (cdr lis) fn))))
+
 (defun write-tree (text)
   (if text
       (if (not (listp text))
