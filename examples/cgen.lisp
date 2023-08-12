@@ -4,10 +4,10 @@
 (defun not (x)
   (if x () t))
 
-(defun map (lis fn)
+(defun map (fn lis)
   (if lis
       (cons (fn (car lis))
-            (map (cdr lis) fn))))
+            (map fn (cdr lis)))))
 
 (defun write-tree (text)
   (if text
@@ -30,19 +30,20 @@
           "    if (path->type != TSTRING || mode->type != TSTRING)\n"
           "        error(\"Parameters must be strings\");\n"
     (list "    return make_pointer(root, " name "(path->str, mode->str));\n")
-          "}\n"))
+          "}\n\n"))
 
 (defun add-prim (name)
   (list "    add_primitive(root, env, \"" name "\", prim_" name ");\n"))
 
-(defun def-lib ()
+(defun def-lib (names)
   (list
     "static void define_library(void *root, Obj **env) {\n"
-      (add-prim 'fopen)
-    "}\n"))
+      (map add-prim names)
+    "}\n\n"))
 
 ;;;;;;;;;;
 
-(write-tree (def-prim 'fopen))
-(princ "\n")
-(write-tree (def-lib))
+(define names '(fopen fclose))
+
+(write-tree (map def-prim names))
+(write-tree (def-lib names))
