@@ -14,6 +14,13 @@
       (+ 1 (length (cdr lis)))
     0))
 
+(defun join (sep lis)
+  (if lis
+      (cons (if (cdr lis)
+                (cons (car lis) sep)
+              (car lis))
+            (join sep (cdr lis)))))
+
 (defun write-tree (text)
   (if text
       (if (not (listp text))
