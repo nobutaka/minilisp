@@ -9,6 +9,11 @@
       (cons (fn (car lis))
             (map fn (cdr lis)))))
 
+(defun length (lis)
+  (if lis
+      (+ 1 (length (cdr lis)))
+    0))
+
 (defun write-tree (text)
   (if text
       (if (not (listp text))
