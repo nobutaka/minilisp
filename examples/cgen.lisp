@@ -32,7 +32,7 @@
 
 (defun def-prim (name params)
   (list
-    (list "// (" name " <string> <string>)\n")
+    (list "// (" name (map (lambda (param) (list " <" param ">")) params) ")\n")
     (list "static Obj *prim_" name "(void *root, Obj **env, Obj **list) {\n")
     (list "    if (length(*list) != " (length params) ")\n")
     (list "        error(\"Malformed " name "\");\n")
