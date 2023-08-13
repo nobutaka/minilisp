@@ -23,11 +23,11 @@
 
 ;;;;;;;;;;
 
-(defun def-prim (name)
+(defun def-prim (name params)
   (list
     (list "// (" name " <string> <string>)\n")
     (list "static Obj *prim_" name "(void *root, Obj **env, Obj **list) {\n")
-          "    if (length(*list) != 2)\n"
+    (list "    if (length(*list) != " (length params) ")\n")
     (list "        error(\"Malformed " name "\");\n")
           "    Obj *args = eval_list(root, env, list);\n"
           "    Obj *path = args->car;\n"
@@ -48,7 +48,9 @@
 
 ;;;;;;;;;;
 
-(define names '(fopen fclose))
+(define decls
+  '((fopen string string)
+    (fclose pointer)))
 
-(write-tree (map def-prim names))
-(write-tree (def-lib names))
+(write-tree (map (lambda (decl) (def-prim (car decl) (cdr decl))) decls))
+(write-tree (def-lib (map car decls)))
