@@ -44,6 +44,8 @@
     (list "    if (length(*list) != " (length params) ")\n")
     (list "        error(\"Malformed " name "\");\n")
           "    Obj *args = eval_list(root, env, list);\n"
+    (map (lambda (i)
+    (list "    Obj *arg" i " = args->car;\n")) (iota (length params)))
           "    Obj *path = args->car;\n"
           "    Obj *mode = args->cdr->car;\n"
           "    if (path->type != TSTRING || mode->type != TSTRING)\n"
