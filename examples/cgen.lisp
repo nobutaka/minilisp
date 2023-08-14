@@ -21,6 +21,13 @@
               (car lis))
             (join sep (cdr lis)))))
 
+(defun %iota (m n)
+  (if (< m n)
+      (cons m (%iota (+ m 1) n))))
+
+(defun iota (n)
+  (%iota 0 n))
+
 (defun write-tree (text)
   (if text
       (if (not (listp text))
