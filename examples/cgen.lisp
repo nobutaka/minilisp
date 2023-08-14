@@ -45,9 +45,7 @@
     (list "        error(\"Malformed " name "\");\n")
           "    Obj *args = eval_list(root, env, list);\n"
     (map (lambda (i)
-    (list "    Obj *arg" i " = args->car;\n")) (iota (length params)))
-          "    Obj *path = args->car;\n"
-          "    Obj *mode = args->cdr->car;\n"
+    (list "    Obj *arg" i " = args" (map (lambda (_) "->cdr") (iota i)) "->car;\n")) (iota (length params)))
           "    if (path->type != TSTRING || mode->type != TSTRING)\n"
           "        error(\"Parameters must be strings\");\n"
     (list "    return make_pointer(root, " name "(path->str, mode->str));\n")
