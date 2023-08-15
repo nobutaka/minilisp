@@ -57,28 +57,28 @@
 (define ttypes   '((number . TNUMBER) (string . TSTRING) (pointer . TPOINTER)))
 (define ->values '((number . ->value) (string . ->str)   (pointer . ->ptr)))
 
-(defun def-prim (rtype name ptypes)
+(defun def-prim (rtype fname ptypes)
   (list
-    (list "// (" name (map (lambda (ptype) (list " <" ptype ">")) ptypes) ")\n")
-    (list "static Obj *prim_" name "(void *root, Obj **env, Obj **list) {\n")
+    (list "// (" fname (map (lambda (ptype) (list " <" ptype ">")) ptypes) ")\n")
+    (list "static Obj *prim_" fname "(void *root, Obj **env, Obj **list) {\n")
     (list "    if (length(*list) != " (length ptypes) ")\n")
-    (list "        error(\"Malformed " name "\");\n")
+    (list "        error(\"Malformed " fname "\");\n")
           "    Obj *args = eval_list(root, env, list);\n"
     (map (lambda (i)
     (list "    Obj *arg" i " = args" (map (lambda (_) "->cdr") (iota i)) "->car;\n")) (iota (length ptypes)))
     (map2 (lambda (i ptype)
     (list "    if (arg" i "->type != " (cdr (assq ptype ttypes)) ")\n"
           "        error(\"Parameter #" i " must be a " ptype "\");\n")) (iota (length ptypes)) ptypes)
-    (list "    return make_pointer(root, " name "(path->str, mode->str));\n")
+    (list "    return make_pointer(root, " fname "(path->str, mode->str));\n")
           "}\n\n"))
 
-(defun add-prim (name)
-  (list "    add_primitive(root, env, \"" name "\", prim_" name ");\n"))
+(defun add-prim (fname)
+  (list "    add_primitive(root, env, \"" fname "\", prim_" fname ");\n"))
 
-(defun def-lib (names)
+(defun def-lib (fnames)
   (list
     "static void define_library(void *root, Obj **env) {\n"
-      (map add-prim names)
+      (map add-prim fnames)
     "}\n\n"))
 
 ;;;;;;;;;;
