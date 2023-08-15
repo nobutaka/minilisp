@@ -22,7 +22,7 @@
 
 (defun assq (x lis)
   (if lis
-      (if (eq x (car (car lis)))
+      (if (eq x (caar lis))
           (car lis)
         (assq x (cdr lis)))))
 
