@@ -9,6 +9,12 @@
       (cons (fn (car lis))
             (map fn (cdr lis)))))
 
+(defun map2 (fn lis1 lis2)
+  (if lis1
+      (if lis2
+          (cons (fn (car lis1) (car lis2))
+                (map2 fn (cdr lis1) (cdr lis2))))))
+
 (defun length (lis)
   (if lis
       (+ 1 (length (cdr lis)))
