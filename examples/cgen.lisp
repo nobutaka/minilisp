@@ -20,6 +20,9 @@
           (cons (fn (car lis1) (car lis2))
                 (map2 fn (cdr lis1) (cdr lis2))))))
 
+(defun map-with-index (fn lis)
+  (map2 fn (iota (length lis)) lis))
+
 (defun assq (x lis)
   (if lis
       (if (eq x (caar lis))
@@ -59,7 +62,7 @@
 (define make-objs '((number . make_number) (string . make_string) (pointer . make_pointer)))
 
 (defun fargs (ptypes)
-  (intersperse ", " (map2 (lambda (i ptype) (list "arg" i (cdr (assq ptype ->values)))) (iota (length ptypes)) ptypes)))
+  (intersperse ", " (map-with-index (lambda (i ptype) (list "arg" i (cdr (assq ptype ->values)))) ptypes)))
 
 (defun def-prim (rtype fname ptypes)
   (list
@@ -70,9 +73,9 @@
           "    Obj *args = eval_list(root, env, list);\n"
     (map (lambda (i)
     (list "    Obj *arg" i " = args" (map (lambda (_) "->cdr") (iota i)) "->car;\n")) (iota (length ptypes)))
-    (map2 (lambda (i ptype)
+    (map-with-index (lambda (i ptype)
     (list "    if (arg" i "->type != " (cdr (assq ptype ttypes)) ")\n"
-          "        error(\"Parameter #" i " must be a " ptype "\");\n")) (iota (length ptypes)) ptypes)
+          "        error(\"Parameter #" i " must be a " ptype "\");\n")) ptypes)
     (list "    return " (cdr (assq rtype make-objs)) "(root, " fname "(" (fargs ptypes) "));\n")
           "}\n\n"))
 
