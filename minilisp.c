@@ -372,6 +372,8 @@ static Obj *make_symbol(void *root, char *name) {
 }
 
 static Obj *make_string(void *root, char *str) {
+    if (str == NULL)
+        return Nil;
     Obj *r = alloc(root, TSTRING, strlen(str) + 1);
     strcpy(r->str, str);
     return r;
@@ -1056,9 +1058,9 @@ static Obj *prim_fopen(void *root, Obj **env, Obj **list) {
     Obj *args = eval_list(root, env, list);
     Obj *arg0 = args->car;
     Obj *arg1 = args->cdr->car;
-    if (arg0->type != TSTRING)
+    if (arg0->type != TSTRING && arg0->type != TNIL)
         error("Parameter #0 must be a string");
-    if (arg1->type != TSTRING)
+    if (arg1->type != TSTRING && arg1->type != TNIL)
         error("Parameter #1 must be a string");
     return make_pointer(root, fopen(arg0->str, arg1->str));
 }

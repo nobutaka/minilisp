@@ -65,9 +65,9 @@
   (list "arg" i "->type != " (cdr (assq ptype ttypes))))
 
 (defun type!= (i ptype)
-  (if (eq ptype 'pointer)
-      (list (%type!= i 'pointer) " && " (%type!= i 'nil))
-    (%type!= i ptype)))
+  (if (eq ptype 'number)
+      (%type!= i ptype)
+    (list (%type!= i ptype) " && " (%type!= i 'nil))))
 
 (defun fargs (ptypes)
   (intersperse ", " (map-with-index (lambda (i ptype) (list "arg" i (cdr (assq ptype ->values)))) ptypes)))
