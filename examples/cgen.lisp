@@ -101,6 +101,7 @@
 (define decls
   '((pointer fopen string string)
     (number fclose pointer)
+    (number putchar number)
     (number sin number)))
 
 (write-tree (map (lambda (decl) (def-prim (car decl) (cadr decl) (cddr decl))) decls))
