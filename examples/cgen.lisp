@@ -54,8 +54,9 @@
 
 ;;;;;;;;;;
 
-(define ttypes   '((number . TNUMBER) (string . TSTRING) (pointer . TPOINTER)))
-(define ->values '((number . ->value) (string . ->str)   (pointer . ->ptr)))
+(define ttypes    '((number . TNUMBER)     (string . TSTRING)     (pointer . TPOINTER)))
+(define ->values  '((number . ->value)     (string . ->str)       (pointer . ->ptr)))
+(define make-objs '((number . make_number) (string . make_string) (pointer . make_pointer)))
 
 (defun def-prim (rtype fname ptypes)
   (list
@@ -69,7 +70,7 @@
     (map2 (lambda (i ptype)
     (list "    if (arg" i "->type != " (cdr (assq ptype ttypes)) ")\n"
           "        error(\"Parameter #" i " must be a " ptype "\");\n")) (iota (length ptypes)) ptypes)
-    (list "    return make_pointer(root, " fname "(path->str, mode->str));\n")
+    (list "    return " (cdr (assq rtype make-objs)) "(root, " fname "(path->str, mode->str));\n")
           "}\n\n"))
 
 (defun add-prim (fname)
