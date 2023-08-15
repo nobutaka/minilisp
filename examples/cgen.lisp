@@ -57,9 +57,17 @@
 
 ;;;;;;;;;;
 
-(define ttypes    '((number . TNUMBER)     (string . TSTRING)     (pointer . TPOINTER)))
+(define ttypes    '((number . TNUMBER)     (string . TSTRING)     (pointer . TPOINTER) (nil . TNIL)))
 (define ->values  '((number . ->value)     (string . ->str)       (pointer . ->ptr)))
 (define make-objs '((number . make_number) (string . make_string) (pointer . make_pointer)))
+
+(defun %type!= (i ptype)
+  (list "arg" i "->type != " (cdr (assq ptype ttypes))))
+
+(defun type!= (i ptype)
+  (if (eq ptype 'pointer)
+      (list (%type!= i 'pointer) " && " (%type!= i 'nil))
+    (%type!= i ptype)))
 
 (defun fargs (ptypes)
   (intersperse ", " (map-with-index (lambda (i ptype) (list "arg" i (cdr (assq ptype ->values)))) ptypes)))
@@ -74,7 +82,7 @@
     (map (lambda (i)
     (list "    Obj *arg" i " = args" (map (lambda (_) "->cdr") (iota i)) "->car;\n")) (iota (length ptypes)))
     (map-with-index (lambda (i ptype)
-    (list "    if (arg" i "->type != " (cdr (assq ptype ttypes)) ")\n"
+    (list "    if (" (type!= i ptype) ")\n"
           "        error(\"Parameter #" i " must be a " ptype "\");\n")) ptypes)
     (list "    return " (cdr (assq rtype make-objs)) "(root, " fname "(" (fargs ptypes) "));\n")
           "}\n\n"))
