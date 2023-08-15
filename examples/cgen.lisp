@@ -14,12 +14,12 @@
       (+ 1 (length (cdr lis)))
     0))
 
-(defun join (sep lis)
+(defun intersperse (sep lis)
   (if lis
       (cons (if (cdr lis)
                 (cons (car lis) sep)
               (car lis))
-            (join sep (cdr lis)))))
+            (intersperse sep (cdr lis)))))
 
 (defun %iota (m n)
   (if (< m n)
