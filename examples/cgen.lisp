@@ -100,7 +100,8 @@
 
 (define decls
   '((pointer fopen string string)
-    (number fclose pointer)))
+    (number fclose pointer)
+    (number sin number)))
 
 (write-tree (map (lambda (decl) (def-prim (car decl) (cadr decl) (cddr decl))) decls))
 (write-tree (def-lib (map cadr decls)))

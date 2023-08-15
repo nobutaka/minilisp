@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #ifdef _WIN32
 # include <memoryapi.h>
 #else
@@ -1076,9 +1077,21 @@ static Obj *prim_fclose(void *root, Obj **env, Obj **list) {
     return make_number(root, fclose(arg0->ptr));
 }
 
+// (sin <number>)
+static Obj *prim_sin(void *root, Obj **env, Obj **list) {
+    if (length(*list) != 1)
+        error("Malformed sin");
+    Obj *args = eval_list(root, env, list);
+    Obj *arg0 = args->car;
+    if (arg0->type != TNUMBER)
+        error("Parameter #0 must be a number");
+    return make_number(root, sin(arg0->value));
+}
+
 static void define_library(void *root, Obj **env) {
     add_primitive(root, env, "fopen", prim_fopen);
     add_primitive(root, env, "fclose", prim_fclose);
+    add_primitive(root, env, "sin", prim_sin);
 }
 
 //======================================================================
