@@ -1054,11 +1054,13 @@ static Obj *prim_fopen(void *root, Obj **env, Obj **list) {
     if (length(*list) != 2)
         error("Malformed fopen");
     Obj *args = eval_list(root, env, list);
-    Obj *path = args->car;
-    Obj *mode = args->cdr->car;
-    if (path->type != TSTRING || mode->type != TSTRING)
-        error("Parameters must be strings");
-    return make_pointer(root, fopen(path->str, mode->str));
+    Obj *arg0 = args->car;
+    Obj *arg1 = args->cdr->car;
+    if (arg0->type != TSTRING)
+        error("Parameter #0 must be a string");
+    if (arg1->type != TSTRING)
+        error("Parameter #1 must be a string");
+    return make_pointer(root, fopen(arg0->str, arg1->str));
 }
 
 static void define_library(void *root, Obj **env) {
