@@ -171,3 +171,4 @@ run princ 'foo()' '(princ "foo")'
 # Library functions
 run fopen '<pointer>' '(fopen "test.sh" "r")'
 run fopen '()' '(fopen "missing" "r")'
+run fclose 0 '(fclose (fopen "test.sh" "r"))'
