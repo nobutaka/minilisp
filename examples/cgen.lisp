@@ -59,7 +59,7 @@
 (define make-objs '((number . make_number) (string . make_string) (pointer . make_pointer)))
 
 (defun fargs (ptypes)
-  (intersperse ", " (list "path->str" "mode->str")))
+  (intersperse ", " (map2 (lambda (i ptype) (list "arg" i (cdr (assq ptype ->values)))) (iota (length ptypes)) ptypes)))
 
 (defun def-prim (rtype fname ptypes)
   (list
