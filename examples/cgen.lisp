@@ -45,12 +45,12 @@
 (defun iota (n)
   (%iota 0 n))
 
-(defun write-tree (text)
-  (if text
-      (if (not (listp text))
-          (princ text)
-        (write-tree (car text))
-        (write-tree (cdr text)))))
+(defun write-tree (x)
+  (if x
+      (if (not (listp x))
+          (princ x)
+        (write-tree (car x))
+        (write-tree (cdr x)))))
 
 ;;;;;;;;;;
 
