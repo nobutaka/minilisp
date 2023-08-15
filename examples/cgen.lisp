@@ -49,7 +49,8 @@
 
 ;;;;;;;;;;
 
-(define t-types '((number . TNUMBER) (string . TSTRING) (pointer . TPOINTER)))
+(define t-types  '((number . TNUMBER) (string . TSTRING) (pointer . TPOINTER)))
+(define ->values '((number . ->value) (string . ->str)   (pointer . ->ptr)))
 
 (defun def-prim (name params)
   (list
