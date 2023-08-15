@@ -15,6 +15,12 @@
           (cons (fn (car lis1) (car lis2))
                 (map2 fn (cdr lis1) (cdr lis2))))))
 
+(defun assq (x lis)
+  (if lis
+      (if (eq x (car (car lis)))
+          (car lis)
+        (assq x (cdr lis)))))
+
 (defun length (lis)
   (if lis
       (+ 1 (length (cdr lis)))
