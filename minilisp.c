@@ -1063,8 +1063,20 @@ static Obj *prim_fopen(void *root, Obj **env, Obj **list) {
     return make_pointer(root, fopen(arg0->str, arg1->str));
 }
 
+// (fclose <pointer>)
+static Obj *prim_fclose(void *root, Obj **env, Obj **list) {
+    if (length(*list) != 1)
+        error("Malformed fclose");
+    Obj *args = eval_list(root, env, list);
+    Obj *arg0 = args->car;
+    if (arg0->type != TPOINTER)
+        error("Parameter #0 must be a pointer");
+    return make_number(root, fclose(arg0->ptr));
+}
+
 static void define_library(void *root, Obj **env) {
     add_primitive(root, env, "fopen", prim_fopen);
+    add_primitive(root, env, "fclose", prim_fclose);
 }
 
 //======================================================================
