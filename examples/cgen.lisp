@@ -58,6 +58,9 @@
 (define ->values  '((number . ->value)     (string . ->str)       (pointer . ->ptr)))
 (define make-objs '((number . make_number) (string . make_string) (pointer . make_pointer)))
 
+(defun fargs (ptypes)
+  (intersperse ", " (list "path->str" "mode->str")))
+
 (defun def-prim (rtype fname ptypes)
   (list
     (list "// (" fname (map (lambda (ptype) (list " <" ptype ">")) ptypes) ")\n")
@@ -70,7 +73,7 @@
     (map2 (lambda (i ptype)
     (list "    if (arg" i "->type != " (cdr (assq ptype ttypes)) ")\n"
           "        error(\"Parameter #" i " must be a " ptype "\");\n")) (iota (length ptypes)) ptypes)
-    (list "    return " (cdr (assq rtype make-objs)) "(root, " fname "(path->str, mode->str));\n")
+    (list "    return " (cdr (assq rtype make-objs)) "(root, " fname "(" (fargs ptypes) "));\n")
           "}\n\n"))
 
 (defun add-prim (fname)
