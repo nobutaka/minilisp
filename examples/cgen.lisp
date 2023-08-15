@@ -57,7 +57,7 @@
 (define t-types  '((number . TNUMBER) (string . TSTRING) (pointer . TPOINTER)))
 (define ->values '((number . ->value) (string . ->str)   (pointer . ->ptr)))
 
-(defun def-prim (name params)
+(defun def-prim (rtype name params)
   (list
     (list "// (" name (map (lambda (param) (list " <" param ">")) params) ")\n")
     (list "static Obj *prim_" name "(void *root, Obj **env, Obj **list) {\n")
@@ -84,8 +84,8 @@
 ;;;;;;;;;;
 
 (define decls
-  '((fopen string string)
-    (fclose pointer)))
+  '((pointer fopen string string)
+    (number fclose pointer)))
 
-(write-tree (map (lambda (decl) (def-prim (car decl) (cdr decl))) decls))
-(write-tree (def-lib (map car decls)))
+(write-tree (map (lambda (decl) (def-prim (car decl) (cadr decl) (cddr decl))) decls))
+(write-tree (def-lib (map cadr decls)))
