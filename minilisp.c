@@ -1069,7 +1069,7 @@ static Obj *prim_fclose(void *root, Obj **env, Obj **list) {
         error("Malformed fclose");
     Obj *args = eval_list(root, env, list);
     Obj *arg0 = args->car;
-    if (arg0->type != TPOINTER)
+    if (arg0->type != TPOINTER && arg0->type != TNIL)
         error("Parameter #0 must be a pointer");
     return make_number(root, fclose(arg0->ptr));
 }
