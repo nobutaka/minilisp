@@ -379,6 +379,7 @@ static Obj *make_string(void *root, char *str) {
     return r;
 }
 
+__attribute((unused))
 static Obj *make_pointer(void *root, void *ptr) {
     if (ptr == NULL)
         return Nil;
