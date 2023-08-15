@@ -52,8 +52,8 @@
           "    Obj *args = eval_list(root, env, list);\n"
     (map (lambda (i)
     (list "    Obj *arg" i " = args" (map (lambda (_) "->cdr") (iota i)) "->car;\n")) (iota (length params)))
-          "    if (path->type != TSTRING || mode->type != TSTRING)\n"
-          "        error(\"Parameters must be strings\");\n"
+          "    if (arg0->type != TSTRING)\n"
+          "        error(\"Parameter #0 must be a string\");\n"
     (list "    return make_pointer(root, " name "(path->str, mode->str));\n")
           "}\n\n"))
 
