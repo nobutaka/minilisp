@@ -79,9 +79,10 @@
   (list
     (list "// (" fname (map (lambda (ptype) (list " <" ptype ">")) ptypes) ")\n")
     (list "static Obj *prim_" fname "(void *root, Obj **env, Obj **list) {\n")
-    (list "    if (length(*list) != " (length ptypes) ")\n")
-    (list "        error(\"Malformed " fname "\");\n")
-          "    Obj *args = eval_list(root, env, list);\n"
+  (if ptypes
+    (list "    if (length(*list) != " (length ptypes) ")\n"
+          "        error(\"Malformed " fname "\");\n"
+          "    Obj *args = eval_list(root, env, list);\n"))
   (map (lambda (i)
     (list "    Obj *arg" i " = args" (map (lambda (_) "->cdr") (iota i)) "->car;\n")) (iota (length ptypes)))
   (map-with-index (lambda (i ptype)
@@ -109,6 +110,7 @@
     (number fclose pointer)
     (number putchar number)
     (void exit number)
+    (number rand)
     (number sin number)))
 
 (write-tree (map (lambda (decl) (def-prim (car decl) (cadr decl) (cddr decl))) decls))

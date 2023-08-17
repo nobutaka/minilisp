@@ -55,6 +55,11 @@ static Obj *prim_exit(void *root, Obj **env, Obj **list) {
     return Nil;
 }
 
+// (rand)
+static Obj *prim_rand(void *root, Obj **env, Obj **list) {
+    return make_number(root, rand());
+}
+
 // (sin <number>)
 static Obj *prim_sin(void *root, Obj **env, Obj **list) {
     if (length(*list) != 1)
@@ -71,5 +76,6 @@ static void define_library(void *root, Obj **env) {
     add_primitive(root, env, "fclose", prim_fclose);
     add_primitive(root, env, "putchar", prim_putchar);
     add_primitive(root, env, "exit", prim_exit);
+    add_primitive(root, env, "rand", prim_rand);
     add_primitive(root, env, "sin", prim_sin);
 }
