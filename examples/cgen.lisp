@@ -2,7 +2,7 @@
 
 ;;;;;;;;;;
 
-(define nilables  '((number? . number)      (string? . string)      (pointer? . pointer)                  ))
+(define nilables  '(                        (string? . string)      (pointer? . pointer)                  ))
 (define ttypes    '((number  . TNUMBER)     (string  . TSTRING)     (pointer  . TPOINTER)     (nil . TNIL)))
 (define ->values  '((number  . ->value)     (string  . ->str)       (pointer  . ->ptr)                    ))
 (define make-objs '((number  . make_number) (string  . make_string) (pointer  . make_pointer)             ))
@@ -26,7 +26,7 @@
   (list "arg" i "->type != " (cdr (assq ptype ttypes))))
 
 (defun arg-type!= (i ptype)
-  (if (eq ptype 'number)
+  (if (not (assq ptype nilables))
       (%arg-type!= i ptype)
     (list (%arg-type!= i ptype) " && " (%arg-type!= i 'nil))))
 
