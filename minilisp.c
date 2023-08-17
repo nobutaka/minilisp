@@ -1013,6 +1013,26 @@ static Obj *prim_listp(void *root, Obj **env, Obj **list) {
     return is_list(eval(root, env, tmp)) ? True : Nil;
 }
 
+static int repl(void *root, Obj **env, bool no_print);
+
+// (load <string>)
+static Obj *prim_load(void *root, Obj **env, Obj **list) {
+    if (length(*list) != 1)
+        error("Malformed load");
+    Obj *args = eval_list(root, env, list);
+    Obj *arg0 = args->car;
+    if (arg0->type != TSTRING)
+        error("Parameter #0 must be a string");
+    FILE *old_input = input;
+    input = fopen(arg0->str, "r");
+    if (!input)
+        error("File not found: %s", arg0->str);
+    repl(root, env, true);
+    fclose(input);
+    input = old_input;
+    return Nil;
+}
+
 static void add_primitive(void *root, Obj **env, char *name, Primitive *fn) {
     DEFINE2(sym, prim);
     *sym = intern(root, name);
@@ -1049,6 +1069,7 @@ static void define_primitives(void *root, Obj **env) {
     add_primitive(root, env, "listp", prim_listp);
     add_primitive(root, env, "println", prim_println);
     add_primitive(root, env, "princ", prim_princ);
+    add_primitive(root, env, "load", prim_load);
 }
 
 #ifdef MINILISP_EXT
