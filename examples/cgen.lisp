@@ -57,9 +57,9 @@
 
 ;;;;;;;;;;
 
-(define ttypes    '((number . TNUMBER)     (string . TSTRING)     (pointer . TPOINTER) (nil . TNIL)))
-(define ->values  '((number . ->value)     (string . ->str)       (pointer . ->ptr)))
-(define make-objs '((number . make_number) (string . make_string) (pointer . make_pointer)))
+(define ttypes    '((number . TNUMBER)     (string . TSTRING)     (pointer . TPOINTER)     (nil . TNIL)))
+(define ->values  '((number . ->value)     (string . ->str)       (pointer . ->ptr)                    ))
+(define make-objs '((number . make_number) (string . make_string) (pointer . make_pointer)             ))
 
 (defun %type!= (i ptype)
   (list "arg" i "->type != " (cdr (assq ptype ttypes))))
