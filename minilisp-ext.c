@@ -14,9 +14,9 @@ static Obj *prim_fopen(void *root, Obj **env, Obj **list) {
     Obj *args = eval_list(root, env, list);
     Obj *arg0 = args->car;
     Obj *arg1 = args->cdr->car;
-    if (arg0->type != TSTRING && arg0->type != TNIL)
+    if (arg0->type != TSTRING)
         error("Parameter #0 must be a string");
-    if (arg1->type != TSTRING && arg1->type != TNIL)
+    if (arg1->type != TSTRING)
         error("Parameter #1 must be a string");
     return make_pointer(root, fopen(arg0->str, arg1->str));
 }
@@ -28,7 +28,7 @@ static Obj *prim_fclose(void *root, Obj **env, Obj **list) {
     DEFINE1(tmp);
     *tmp = (*list)->car;
     Obj *arg0 = eval(root, env, tmp);
-    if (arg0->type != TPOINTER && arg0->type != TNIL)
+    if (arg0->type != TPOINTER)
         error("Parameter #0 must be a pointer");
     return make_number(root, fclose(arg0->ptr));
 }
