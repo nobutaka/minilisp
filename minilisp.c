@@ -1019,8 +1019,9 @@ static int repl(void *root, Obj **env, bool no_print);
 static Obj *prim_load(void *root, Obj **env, Obj **list) {
     if (length(*list) != 1)
         error("Malformed load");
-    Obj *args = eval_list(root, env, list);
-    Obj *arg0 = args->car;
+    DEFINE1(tmp);
+    *tmp = (*list)->car;
+    Obj *arg0 = eval(root, env, tmp);
     if (arg0->type != TSTRING)
         error("Parameter #0 must be a string");
     FILE *old_input = input;
