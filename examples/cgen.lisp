@@ -72,6 +72,9 @@
 (defun fargs (ptypes)
   (intersperse ", " (map-with-index (lambda (i ptype) (list "arg" i (cdr (assq ptype ->values)))) ptypes)))
 
+(defun fcall (fname ptypes)
+  (list fname "(" (fargs ptypes) ")"))
+
 (defun def-prim (rtype fname ptypes)
   (list
     (list "// (" fname (map (lambda (ptype) (list " <" ptype ">")) ptypes) ")\n")
@@ -79,12 +82,15 @@
     (list "    if (length(*list) != " (length ptypes) ")\n")
     (list "        error(\"Malformed " fname "\");\n")
           "    Obj *args = eval_list(root, env, list);\n"
-    (map (lambda (i)
+  (map (lambda (i)
     (list "    Obj *arg" i " = args" (map (lambda (_) "->cdr") (iota i)) "->car;\n")) (iota (length ptypes)))
-    (map-with-index (lambda (i ptype)
+  (map-with-index (lambda (i ptype)
     (list "    if (" (type!= i ptype) ")\n"
           "        error(\"Parameter #" i " must be a " ptype "\");\n")) ptypes)
-    (list "    return " (cdr (assq rtype make-objs)) "(root, " fname "(" (fargs ptypes) "));\n")
+  (if (eq rtype 'void)
+    (list "    " (fcall fname ptypes) ";\n"
+          "    return Nil;\n")
+    (list "    return " (cdr (assq rtype make-objs)) "(root, " (fcall fname ptypes) ");\n"))
           "}\n\n"))
 
 (defun add-prim (fname)
@@ -102,6 +108,7 @@
   '((pointer fopen string string)
     (number fclose pointer)
     (number putchar number)
+    (void exit number)
     (number sin number)))
 
 (write-tree (map (lambda (decl) (def-prim (car decl) (cadr decl) (cddr decl))) decls))
