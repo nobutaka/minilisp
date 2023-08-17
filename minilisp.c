@@ -1067,30 +1067,9 @@ static bool getEnvFlag(char *name) {
     return val && val[0];
 }
 
-int main(int argc, char **argv) {
-    // Debug flags
-    debug_gc = getEnvFlag("MINILISP_DEBUG_GC");
-    always_gc = getEnvFlag("MINILISP_ALWAYS_GC");
-
-    // Other flags
-    bool no_print = getEnvFlag("MINILISP_NO_PRINT");
-
-    // Memory allocation
-    memory = alloc_semispace();
-
-    // Constants, primitives and library
-    Symbols = Nil;
-    void *root = NULL;
-    DEFINE2(env, expr);
-    *env = make_env(root, &Nil, &Nil);
-    define_constants(root, env);
-    define_primitives(root, env);
-    define_library(root, env);
-
-    // Set up the reader
-    input = stdin;
-
-    // The main loop
+// Read–eval–print loop
+static int repl(void *root, Obj **env, bool no_print) {
+    DEFINE1(expr);
     for (;;) {
         *expr = read_expr(root);
         if (!*expr)
@@ -1105,4 +1084,31 @@ int main(int argc, char **argv) {
         print(obj, true);
         printf("\n");
     }
+}
+
+int main(int argc, char **argv) {
+    // Debug flags
+    debug_gc = getEnvFlag("MINILISP_DEBUG_GC");
+    always_gc = getEnvFlag("MINILISP_ALWAYS_GC");
+
+    // Other flags
+    bool no_print = getEnvFlag("MINILISP_NO_PRINT");
+
+    // Memory allocation
+    memory = alloc_semispace();
+
+    // Constants, primitives and library
+    Symbols = Nil;
+    void *root = NULL;
+    DEFINE1(env);
+    *env = make_env(root, &Nil, &Nil);
+    define_constants(root, env);
+    define_primitives(root, env);
+    define_library(root, env);
+
+    // Set up the reader
+    input = stdin;
+
+    // The main loop
+    return repl(root, env, no_print);
 }
