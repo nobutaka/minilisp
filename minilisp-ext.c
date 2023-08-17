@@ -25,8 +25,9 @@ static Obj *prim_fopen(void *root, Obj **env, Obj **list) {
 static Obj *prim_fclose(void *root, Obj **env, Obj **list) {
     if (length(*list) != 1)
         error("Malformed fclose");
-    Obj *args = eval_list(root, env, list);
-    Obj *arg0 = args->car;
+    DEFINE1(tmp);
+    *tmp = (*list)->car;
+    Obj *arg0 = eval(root, env, tmp);
     if (arg0->type != TPOINTER && arg0->type != TNIL)
         error("Parameter #0 must be a pointer");
     return make_number(root, fclose(arg0->ptr));
@@ -36,8 +37,9 @@ static Obj *prim_fclose(void *root, Obj **env, Obj **list) {
 static Obj *prim_putchar(void *root, Obj **env, Obj **list) {
     if (length(*list) != 1)
         error("Malformed putchar");
-    Obj *args = eval_list(root, env, list);
-    Obj *arg0 = args->car;
+    DEFINE1(tmp);
+    *tmp = (*list)->car;
+    Obj *arg0 = eval(root, env, tmp);
     if (arg0->type != TNUMBER)
         error("Parameter #0 must be a number");
     return make_number(root, putchar(arg0->value));
@@ -47,8 +49,9 @@ static Obj *prim_putchar(void *root, Obj **env, Obj **list) {
 static Obj *prim_exit(void *root, Obj **env, Obj **list) {
     if (length(*list) != 1)
         error("Malformed exit");
-    Obj *args = eval_list(root, env, list);
-    Obj *arg0 = args->car;
+    DEFINE1(tmp);
+    *tmp = (*list)->car;
+    Obj *arg0 = eval(root, env, tmp);
     if (arg0->type != TNUMBER)
         error("Parameter #0 must be a number");
     exit(arg0->value);
@@ -64,8 +67,9 @@ static Obj *prim_rand(void *root, Obj **env, Obj **list) {
 static Obj *prim_sin(void *root, Obj **env, Obj **list) {
     if (length(*list) != 1)
         error("Malformed sin");
-    Obj *args = eval_list(root, env, list);
-    Obj *arg0 = args->car;
+    DEFINE1(tmp);
+    *tmp = (*list)->car;
+    Obj *arg0 = eval(root, env, tmp);
     if (arg0->type != TNUMBER)
         error("Parameter #0 must be a number");
     return make_number(root, sin(arg0->value));
