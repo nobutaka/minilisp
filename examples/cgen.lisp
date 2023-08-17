@@ -15,13 +15,13 @@
   (map (lambda (i)
     (list "    Obj *arg" i " = args" (map (lambda (_) "->cdr") (iota i)) "->car;\n")) (iota (length ptypes))))))
 
-(defun %type!= (i ptype)
+(defun %arg-type!= (i ptype)
   (list "arg" i "->type != " (cdr (assq ptype ttypes))))
 
-(defun type!= (i ptype)
+(defun arg-type!= (i ptype)
   (if (eq ptype 'number)
-      (%type!= i ptype)
-    (list (%type!= i ptype) " && " (%type!= i 'nil))))
+      (%arg-type!= i ptype)
+    (list (%arg-type!= i ptype) " && " (%arg-type!= i 'nil))))
 
 (defun fargs (ptypes)
   (intersperse ", " (map-with-index (lambda (i ptype) (list "arg" i (cdr (assq ptype ->values)))) ptypes)))
@@ -38,7 +38,7 @@
           "        error(\"Malformed " fname "\");\n"
                (def-args ptypes)))
   (map-with-index (lambda (i ptype)
-    (list "    if (" (type!= i ptype) ")\n"
+    (list "    if (" (arg-type!= i ptype) ")\n"
           "        error(\"Parameter #" i " must be a " ptype "\");\n")) ptypes)
   (if (eq rtype 'void)
     (list "    " (fcall fname ptypes) ";\n"
