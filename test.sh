@@ -168,6 +168,9 @@ run recursion 55 '(defun f (x) (if (= x 0) 0 (+ (f (+ x -1)) x))) (f 10)'
 run println '()' '(println "foo")'
 run princ 'foo()' '(princ "foo")'
 
+# System interface
+run load '()' '(load "lib.lisp")'
+
 # Library functions
 run fopen '<pointer>' '(fopen "test.sh" "r")'
 run fopen '()' '(fopen "missing" "r")'
