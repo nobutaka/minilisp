@@ -171,7 +171,7 @@ run princ 'foo()' '(princ "foo")'
 # System interface
 run load '()' '(load "lib.lisp")'
 
-# Library functions
+# C library functions
 run fopen '<pointer>' '(fopen "test.sh" "r")'
 run fopen '()' '(fopen "missing" "r")'
 run fopen '()' '(fopen () "r")'
