@@ -428,7 +428,7 @@ static Obj *acons(void *root, Obj **x, Obj **y, Obj **a) {
 #define SYMBOL_MAX_LEN 200
 static const char symbol_chars[] = "~!@#$%^&*-_=+:/?<>";
 
-// The FILE pointer to read an expression
+// The FILE pointer to read an expression.
 static FILE *input;
 
 static Obj *read_expr(void *root);
