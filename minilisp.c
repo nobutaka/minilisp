@@ -428,11 +428,14 @@ static Obj *acons(void *root, Obj **x, Obj **y, Obj **a) {
 #define SYMBOL_MAX_LEN 200
 static const char symbol_chars[] = "~!@#$%^&*-_=+:/?<>";
 
+// The FILE pointer to read an expression
+static FILE *input;
+
 static Obj *read_expr(void *root);
 
 static int peek(void) {
-    int c = getchar();
-    ungetc(c, stdin);
+    int c = getc(input);
+    ungetc(c, input);
     return c;
 }
 
@@ -451,12 +454,12 @@ static Obj *reverse(Obj *p) {
 // Skips the input until newline is found. Newline is one of \r, \r\n or \n.
 static void skip_line(void) {
     for (;;) {
-        int c = getchar();
+        int c = getc(input);
         if (c == EOF || c == '\n')
             return;
         if (c == '\r') {
             if (peek() == '\n')
-                getchar();
+                getc(input);
             return;
         }
     }
@@ -510,11 +513,11 @@ static Obj *read_string(void *root) {
     char buf[STRING_MAX_LEN + 1];
     int len = 0;
     int c;
-    while ((c = getchar()) != '"') {
+    while ((c = getc(input)) != '"') {
         if (STRING_MAX_LEN <= len)
             error("String too long");
         if (c == '\\') {
-            c = getchar();
+            c = getc(input);
             switch (c) {
             case 'n': c = '\n'; break;
             case 'r': c = '\r'; break;
@@ -529,11 +532,11 @@ static Obj *read_string(void *root) {
 static double read_number(double val) {
     double power = 1;
     while (isdigit(peek()))
-        val = val * 10 + (getchar() - '0');
+        val = val * 10 + (getc(input) - '0');
     if (peek() == '.')
-        getchar();
+        getc(input);
     for (; isdigit(peek()); power *= 10)
-        val = val * 10 + (getchar() - '0');
+        val = val * 10 + (getc(input) - '0');
     return val / power;
 }
 
@@ -544,7 +547,7 @@ static Obj *read_symbol(void *root, char c) {
     while (isalnum(peek()) || strchr(symbol_chars, peek())) {
         if (SYMBOL_MAX_LEN <= len)
             error("Symbol name too long");
-        buf[len++] = getchar();
+        buf[len++] = getc(input);
     }
     buf[len] = '\0';
     return intern(root, buf);
@@ -552,7 +555,7 @@ static Obj *read_symbol(void *root, char c) {
 
 static Obj *read_expr(void *root) {
     for (;;) {
-        int c = getchar();
+        int c = getc(input);
         if (c == ' ' || c == '\n' || c == '\r' || c == '\t')
             continue;
         if (c == EOF)
@@ -1083,6 +1086,9 @@ int main(int argc, char **argv) {
     define_constants(root, env);
     define_primitives(root, env);
     define_library(root, env);
+
+    // Set up the reader
+    input = stdin;
 
     // The main loop
     for (;;) {
