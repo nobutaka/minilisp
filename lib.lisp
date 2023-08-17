@@ -9,6 +9,17 @@
 (defun not (x)
   (if x () t))
 
+(defmacro let1 (var val . body)
+  (cons (cons 'lambda (cons (list var) body))
+        (list val)))
+
+(defmacro or (expr . rest)
+  (if rest
+      (let1 var (gensym)
+        (list 'let1 var expr
+          (list 'if var var (cons 'or rest))))
+    expr))
+
 (defun map (fn lis)
   (if lis
       (cons (fn (car lis))
