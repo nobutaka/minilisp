@@ -6,6 +6,15 @@
 (define ->values  '((number . ->value)     (string . ->str)       (pointer . ->ptr)                    ))
 (define make-objs '((number . make_number) (string . make_string) (pointer . make_pointer)             ))
 
+(defun def-args (ptypes)
+  (if (= (length ptypes) 1)
+    (list "    DEFINE1(tmp);\n"
+          "    *tmp = (*list)->car;\n"
+          "    Obj *arg0 = eval(root, env, tmp);\n")
+    (list "    Obj *args = eval_list(root, env, list);\n"
+  (map (lambda (i)
+    (list "    Obj *arg" i " = args" (map (lambda (_) "->cdr") (iota i)) "->car;\n")) (iota (length ptypes))))))
+
 (defun %type!= (i ptype)
   (list "arg" i "->type != " (cdr (assq ptype ttypes))))
 
