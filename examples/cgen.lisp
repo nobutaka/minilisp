@@ -2,12 +2,14 @@
 
 ;;;;;;;;;;
 
-(define ttypes    '((number . TNUMBER)     (string . TSTRING)     (pointer . TPOINTER)     (nil . TNIL)))
-(define ->values  '((number . ->value)     (string . ->str)       (pointer . ->ptr)                    ))
-(define make-objs '((number . make_number) (string . make_string) (pointer . make_pointer)             ))
+(define nilables  '((number? . number)      (string? . string)      (pointer? . pointer)                  ))
+(define ttypes    '((number  . TNUMBER)     (string  . TSTRING)     (pointer  . TPOINTER)     (nil . TNIL)))
+(define ->values  '((number  . ->value)     (string  . ->str)       (pointer  . ->ptr)                    ))
+(define make-objs '((number  . make_number) (string  . make_string) (pointer  . make_pointer)             ))
 
 (defun make-obj (rtype)
-  (cdr (assq rtype make-objs)))
+  (let1 nilable (assq rtype nilables)
+    (cdr (assq (if nilable (cdr nilable) rtype) make-objs))))
 
 ;;;;;;;;;;
 
@@ -63,7 +65,7 @@
 ;;;;;;;;;;
 
 (define decls
-  '((pointer fopen string string)
+  '((pointer? fopen string string)
     (number fclose pointer)
     (number putchar number)
     (void exit number)
