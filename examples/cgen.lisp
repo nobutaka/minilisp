@@ -6,6 +6,11 @@
 (define ->values  '((number . ->value)     (string . ->str)       (pointer . ->ptr)                    ))
 (define make-objs '((number . make_number) (string . make_string) (pointer . make_pointer)             ))
 
+(defun make-obj (rtype)
+  (cdr (assq rtype make-objs)))
+
+;;;;;;;;;;
+
 (defun def-args (ptypes)
   (if (= (length ptypes) 1)
     (list "    DEFINE1(tmp);\n"
@@ -43,7 +48,7 @@
   (if (eq rtype 'void)
     (list "    " (fcall fname ptypes) ";\n"
           "    return Nil;\n")
-    (list "    return " (cdr (assq rtype make-objs)) "(root, " (fcall fname ptypes) ");\n"))
+    (list "    return " (make-obj rtype) "(root, " (fcall fname ptypes) ");\n"))
           "}\n\n"))
 
 (defun add-prim (fname)
