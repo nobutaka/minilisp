@@ -372,7 +372,7 @@ static Obj *make_symbol(void *root, char *name) {
 }
 
 static Obj *make_string(void *root, char *str) {
-    if (str == NULL)
+    if (!str)
         return Nil;
     Obj *r = alloc(root, TSTRING, strlen(str) + 1);
     strcpy(r->str, str);
@@ -381,7 +381,7 @@ static Obj *make_string(void *root, char *str) {
 
 __attribute((unused))
 static Obj *make_pointer(void *root, void *ptr) {
-    if (ptr == NULL)
+    if (!ptr)
         return Nil;
     Obj *r = alloc(root, TPOINTER, sizeof(void *));
     r->ptr = ptr;
