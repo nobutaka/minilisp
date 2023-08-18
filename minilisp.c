@@ -1134,6 +1134,9 @@ int main(int argc, char **argv) {
     define_primitives(root, env);
     define_library(root, env);
 
+    // Mark a return point
+    setjmp(exception_env);
+
     // Set up the reader
     input = stdin;
 
