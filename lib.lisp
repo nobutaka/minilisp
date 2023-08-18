@@ -10,8 +10,11 @@
   (if x () t))
 
 (defmacro let1 (var val . body)
-  (cons (cons 'lambda (cons (list var) body))
-        (list val)))
+  (cons (cons 'lambda (cons (list var) body)) (list val)))
+
+(defmacro aif (test then . else)
+  (list 'let1 'it test
+    (cons 'if (cons 'it (cons then else)))))
 
 (defmacro or (expr . rest)
   (if rest
