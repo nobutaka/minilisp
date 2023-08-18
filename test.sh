@@ -28,6 +28,8 @@ function run() {
   echo ok
 }
 
+lib='(load "lib.lisp")'
+
 # Basic data types
 run integer 1 1
 run integer -1 -1
@@ -160,7 +162,6 @@ run macroexpand '(if (= x 0) (print x))' "
   (defmacro if-zero (x then) (list 'if (list '= x 0) then))
   (macroexpand (if-zero x (print x)))"
 
-
 # Sum from 0 to 10
 run recursion 55 '(defun f (x) (if (= x 0) 0 (+ (f (+ x -1)) x))) (f 10)'
 
@@ -180,3 +181,20 @@ run c-exit '' '(c-exit 0)'
 run c-free '()' '(c-free ())'
 run c-rand '()' '(= (c-rand) (c-rand))'
 run c-sin 0 '(c-sin 0)'
+
+# lib.lisp
+run caar 1 "$lib (caar '((1 . 2) . 3))"
+run list '(1 2)' "$lib (list 1 2)"
+run not t "$lib (not ())"
+run let1 42 "$lib (let1 x 42 x)"
+run aif 42 "$lib (aif 42 it 43)"
+run or 42 "$lib (or 42 43)"
+run map '(-1 -2)' "$lib (map - '(1 2))"
+run map2 '((1 . 3) (2 . 4))' "$lib (map2 cons '(1 2) '(3 4))"
+run map-with-index '((0 . a) (1 . b))' "$lib (map-with-index cons '(a b))"
+run assq '(x . y)' "$lib (assq 'x '((a . b) (x . y)))"
+run length 2 "$lib (length '(a b))"
+run reverse '(3 2 1)' "$lib (reverse '(1 2 3))"
+run intersperse '(1 + 2 + 3)' "$lib (intersperse '+ '(1 2 3))"
+run iota '(0 1 2)' "$lib (iota 3)"
+run write-tree 'xyz()' "$lib (write-tree '(x (y . z)))"
