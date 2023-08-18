@@ -56,12 +56,15 @@
 (defun reverse (lis)
   (%reverse lis ()))
 
-(defun intersperse (sep lis)
+(defun %intersperse (sep lis ret)
   (if lis
-      (cons (if (cdr lis)
-                (cons (car lis) sep)
-              (car lis))
-            (intersperse sep (cdr lis)))))
+      (%intersperse sep (cdr lis) (if (cdr lis)
+                                      (cons sep (cons (car lis) ret))
+                                    (cons (car lis) ret)))
+    (reverse ret)))
+
+(defun intersperse (sep lis)
+  (%intersperse sep lis ()))
 
 (defun %iota (m n)
   (if (< m n)
