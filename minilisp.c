@@ -114,7 +114,7 @@ static Obj *Symbols;
 //======================================================================
 
 // The size of the heap in byte
-#define MEMORY_SIZE 65536
+#define MEMORY_SIZE 131072
 
 // The pointer pointing to the beginning of the current heap
 static void *memory;
