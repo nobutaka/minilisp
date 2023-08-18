@@ -48,10 +48,10 @@
       (+ 1 (length (cdr lis)))
     0))
 
-(defun %reverse (lis rev)
+(defun %reverse (lis ret)
   (if lis
-      (%reverse (cdr lis) (cons (car lis) rev))
-    rev))
+      (%reverse (cdr lis) (cons (car lis) ret))
+    ret))
 
 (defun reverse (lis)
   (%reverse lis ()))
