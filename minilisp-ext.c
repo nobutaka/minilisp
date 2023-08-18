@@ -7,10 +7,10 @@
 // C library functions
 //======================================================================
 
-// (fopen <string> <string>)
-static Obj *prim_fopen(void *root, Obj **env, Obj **list) {
+// (c-fopen <string> <string>)
+static Obj *prim_c_fopen(void *root, Obj **env, Obj **list) {
     if (length(*list) != 2)
-        error("Malformed fopen");
+        error("Malformed c-fopen");
     Obj *args = eval_list(root, env, list);
     Obj *arg0 = args->car;
     Obj *arg1 = args->cdr->car;
@@ -21,10 +21,10 @@ static Obj *prim_fopen(void *root, Obj **env, Obj **list) {
     return make_pointer(root, fopen(arg0->str, arg1->str));
 }
 
-// (fclose <pointer>)
-static Obj *prim_fclose(void *root, Obj **env, Obj **list) {
+// (c-fclose <pointer>)
+static Obj *prim_c_fclose(void *root, Obj **env, Obj **list) {
     if (length(*list) != 1)
-        error("Malformed fclose");
+        error("Malformed c-fclose");
     DEFINE1(tmp);
     *tmp = (*list)->car;
     Obj *arg0 = eval(root, env, tmp);
@@ -33,10 +33,10 @@ static Obj *prim_fclose(void *root, Obj **env, Obj **list) {
     return make_number(root, fclose(arg0->ptr));
 }
 
-// (putchar <number>)
-static Obj *prim_putchar(void *root, Obj **env, Obj **list) {
+// (c-putchar <number>)
+static Obj *prim_c_putchar(void *root, Obj **env, Obj **list) {
     if (length(*list) != 1)
-        error("Malformed putchar");
+        error("Malformed c-putchar");
     DEFINE1(tmp);
     *tmp = (*list)->car;
     Obj *arg0 = eval(root, env, tmp);
@@ -45,10 +45,10 @@ static Obj *prim_putchar(void *root, Obj **env, Obj **list) {
     return make_number(root, putchar(arg0->value));
 }
 
-// (exit <number>)
-static Obj *prim_exit(void *root, Obj **env, Obj **list) {
+// (c-exit <number>)
+static Obj *prim_c_exit(void *root, Obj **env, Obj **list) {
     if (length(*list) != 1)
-        error("Malformed exit");
+        error("Malformed c-exit");
     DEFINE1(tmp);
     *tmp = (*list)->car;
     Obj *arg0 = eval(root, env, tmp);
@@ -58,15 +58,15 @@ static Obj *prim_exit(void *root, Obj **env, Obj **list) {
     return Nil;
 }
 
-// (rand)
-static Obj *prim_rand(void *root, Obj **env, Obj **list) {
+// (c-rand)
+static Obj *prim_c_rand(void *root, Obj **env, Obj **list) {
     return make_number(root, rand());
 }
 
-// (sin <number>)
-static Obj *prim_sin(void *root, Obj **env, Obj **list) {
+// (c-sin <number>)
+static Obj *prim_c_sin(void *root, Obj **env, Obj **list) {
     if (length(*list) != 1)
-        error("Malformed sin");
+        error("Malformed c-sin");
     DEFINE1(tmp);
     *tmp = (*list)->car;
     Obj *arg0 = eval(root, env, tmp);
@@ -76,10 +76,10 @@ static Obj *prim_sin(void *root, Obj **env, Obj **list) {
 }
 
 static void define_library(void *root, Obj **env) {
-    add_primitive(root, env, "fopen", prim_fopen);
-    add_primitive(root, env, "fclose", prim_fclose);
-    add_primitive(root, env, "putchar", prim_putchar);
-    add_primitive(root, env, "exit", prim_exit);
-    add_primitive(root, env, "rand", prim_rand);
-    add_primitive(root, env, "sin", prim_sin);
+    add_primitive(root, env, "c-fopen", prim_c_fopen);
+    add_primitive(root, env, "c-fclose", prim_c_fclose);
+    add_primitive(root, env, "c-putchar", prim_c_putchar);
+    add_primitive(root, env, "c-exit", prim_c_exit);
+    add_primitive(root, env, "c-rand", prim_c_rand);
+    add_primitive(root, env, "c-sin", prim_c_sin);
 }

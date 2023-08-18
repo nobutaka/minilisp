@@ -20,6 +20,9 @@
 
 ;;;;;;;;;;
 
+(defun c- (fname) (cons "c-" fname))
+(defun c_ (fname) (cons "c_" fname))
+
 (defun def-args (ptypes)
   (if (= (length ptypes) 1)
     (list "    DEFINE1(tmp);\n"
@@ -45,11 +48,11 @@
 
 (defun def-prim (rtype fname ptypes)
   (list
-    (list "// (" fname (map (lambda (ptype) (list " <" ptype ">")) ptypes) ")\n")
-    (list "static Obj *prim_" fname "(void *root, Obj **env, Obj **list) {\n")
+    (list "// (" (c- fname) (map (lambda (ptype) (list " <" ptype ">")) ptypes) ")\n")
+    (list "static Obj *prim_" (c_ fname) "(void *root, Obj **env, Obj **list) {\n")
   (if ptypes
     (list "    if (length(*list) != " (length ptypes) ")\n"
-          "        error(\"Malformed " fname "\");\n"
+          "        error(\"Malformed " (c- fname) "\");\n"
                (def-args ptypes)))
   (map-with-index (lambda (i ptype)
     (list "    if (" (arg-type!= i ptype) ")\n"
@@ -61,7 +64,7 @@
           "}\n\n"))
 
 (defun add-prim (fname)
-  (list "    add_primitive(root, env, \"" fname "\", prim_" fname ");\n"))
+  (list "    add_primitive(root, env, \"" (c- fname) "\", prim_" (c_ fname) ");\n"))
 
 (defun def-lib (fnames)
   (list
