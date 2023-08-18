@@ -7,9 +7,16 @@
 (define ->values  '((number  . ->value)     (string  . ->str)       (pointer  . ->ptr)                    ))
 (define make-objs '((number  . make_number) (string  . make_string) (pointer  . make_pointer)             ))
 
-(defun make-obj (rtype)
-  (let1 nilable (assq rtype nilables)
-    (cdr (assq (if nilable (cdr nilable) rtype) make-objs))))
+(defun nilablep (type)
+  (assq type nilables))
+
+(defun de-nilable (type)
+  (let1 nilable (assq type nilables)
+    (if nilable (cdr nilable) type)))
+
+(defun ttype (type) (cdr (assq (de-nilable type) ttypes)))
+(defun ->value (type) (cdr (assq (de-nilable type) ->values)))
+(defun make-obj (type) (cdr (assq (de-nilable type) make-objs)))
 
 ;;;;;;;;;;
 
@@ -23,15 +30,15 @@
     (list "    Obj *arg" i " = args" (map (lambda (_) "->cdr") (iota i)) "->car;\n")) (iota (length ptypes))))))
 
 (defun %arg-type!= (i ptype)
-  (list "arg" i "->type != " (cdr (assq ptype ttypes))))
+  (list "arg" i "->type != " (ttype ptype)))
 
 (defun arg-type!= (i ptype)
-  (if (not (assq ptype nilables))
+  (if (not (nilablep ptype))
       (%arg-type!= i ptype)
     (list (%arg-type!= i ptype) " && " (%arg-type!= i 'nil))))
 
 (defun fargs (ptypes)
-  (intersperse ", " (map-with-index (lambda (i ptype) (list "arg" i (cdr (assq ptype ->values)))) ptypes)))
+  (intersperse ", " (map-with-index (lambda (i ptype) (list "arg" i (->value ptype))) ptypes)))
 
 (defun fcall (fname ptypes)
   (list fname "(" (fargs ptypes) ")"))
