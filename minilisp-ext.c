@@ -58,6 +58,19 @@ static Obj *prim_c_exit(void *root, Obj **env, Obj **list) {
     return Nil;
 }
 
+// (c-free <pointer?>)
+static Obj *prim_c_free(void *root, Obj **env, Obj **list) {
+    if (length(*list) != 1)
+        error("Malformed c-free");
+    DEFINE1(tmp);
+    *tmp = (*list)->car;
+    Obj *arg0 = eval(root, env, tmp);
+    if (arg0->type != TPOINTER && arg0->type != TNIL)
+        error("Parameter #0 must be a pointer?");
+    free(arg0->ptr);
+    return Nil;
+}
+
 // (c-rand)
 static Obj *prim_c_rand(void *root, Obj **env, Obj **list) {
     return make_number(root, rand());
@@ -80,6 +93,7 @@ static void define_library(void *root, Obj **env) {
     add_primitive(root, env, "c-fclose", prim_c_fclose);
     add_primitive(root, env, "c-putchar", prim_c_putchar);
     add_primitive(root, env, "c-exit", prim_c_exit);
+    add_primitive(root, env, "c-free", prim_c_free);
     add_primitive(root, env, "c-rand", prim_c_rand);
     add_primitive(root, env, "c-sin", prim_c_sin);
 }

@@ -79,6 +79,7 @@
     (number fclose pointer)
     (number putchar number)
     (void exit number)
+    (void free pointer?)
     (number rand)
     (number sin number)))
 
