@@ -11,8 +11,7 @@
   (assq type nilables))
 
 (defun de-nilable (type)
-  (let1 nilable (assq type nilables)
-    (if nilable (cdr nilable) type)))
+  (aif (assq type nilables) (cdr it) type))
 
 (defun ttype (type) (cdr (assq (de-nilable type) ttypes)))
 (defun ->value (type) (cdr (assq (de-nilable type) ->values)))
