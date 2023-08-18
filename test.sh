@@ -28,6 +28,8 @@ function run() {
   echo ok
 }
 
+lib='(load "lib.lisp")'
+
 # Basic data types
 run integer 1 1
 run integer -1 -1
@@ -160,7 +162,6 @@ run macroexpand '(if (= x 0) (print x))' "
   (defmacro if-zero (x then) (list 'if (list '= x 0) then))
   (macroexpand (if-zero x (print x)))"
 
-
 # Sum from 0 to 10
 run recursion 55 '(defun f (x) (if (= x 0) 0 (+ (f (+ x -1)) x))) (f 10)'
 
@@ -180,3 +181,6 @@ run c-exit '' '(c-exit 0)'
 run c-free '()' '(c-free ())'
 run c-rand '()' '(= (c-rand) (c-rand))'
 run c-sin 0 '(c-sin 0)'
+
+# lib.lisp
+run caar 1 "$lib (caar '((1 . 2) . 3))"
