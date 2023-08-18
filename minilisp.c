@@ -10,11 +10,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <setjmp.h>
 #ifdef _WIN32
 # include <memoryapi.h>
 #else
 # include <sys/mman.h>
 #endif
+
+static jmp_buf exception_env;
 
 static __attribute((noreturn)) void error(char *fmt, ...) {
     va_list ap;
@@ -22,6 +25,8 @@ static __attribute((noreturn)) void error(char *fmt, ...) {
     vfprintf(stderr, fmt, ap);
     fprintf(stderr, "\n");
     va_end(ap);
+    if (isatty(STDIN_FILENO))
+        longjmp(exception_env, 1);
     exit(1);
 }
 
@@ -1128,6 +1133,9 @@ int main(int argc, char **argv) {
     define_constants(root, env);
     define_primitives(root, env);
     define_library(root, env);
+
+    // Mark a return point
+    setjmp(exception_env);
 
     // Set up the reader
     input = stdin;
