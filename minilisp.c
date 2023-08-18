@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #ifdef _WIN32
 # include <memoryapi.h>
 #else
@@ -1013,7 +1014,7 @@ static Obj *prim_listp(void *root, Obj **env, Obj **list) {
     return is_list(eval(root, env, tmp)) ? True : Nil;
 }
 
-static int repl(void *root, Obj **env, bool no_print);
+static int repl(void *root, Obj **env, bool prn);
 
 // (load <string>)
 static Obj *prim_load(void *root, Obj **env, Obj **list) {
@@ -1028,7 +1029,7 @@ static Obj *prim_load(void *root, Obj **env, Obj **list) {
     input = fopen(arg0->str, "r");
     if (!input)
         error("File not found: %s", arg0->str);
-    repl(root, env, true);
+    repl(root, env, false);
     fclose(input);
     input = old_input;
     return Nil;
@@ -1090,7 +1091,7 @@ static bool getEnvFlag(char *name) {
 }
 
 // Read–eval–print loop
-static int repl(void *root, Obj **env, bool no_print) {
+static int repl(void *root, Obj **env, bool prn) {
     DEFINE1(expr);
     for (;;) {
         *expr = read_expr(root);
@@ -1101,7 +1102,7 @@ static int repl(void *root, Obj **env, bool no_print) {
         if (*expr == Dot)
             error("Stray dot");
         Obj *obj = eval(root, env, expr);
-        if (no_print)
+        if (!prn)
             continue;
         print(obj, true);
         printf("\n");
@@ -1114,7 +1115,7 @@ int main(int argc, char **argv) {
     always_gc = getEnvFlag("MINILISP_ALWAYS_GC");
 
     // Other flags
-    bool no_print = getEnvFlag("MINILISP_NO_PRINT");
+    bool tty = getEnvFlag("MINILISP_TTY") || isatty(STDIN_FILENO);
 
     // Memory allocation
     memory = alloc_semispace();
@@ -1132,5 +1133,5 @@ int main(int argc, char **argv) {
     input = stdin;
 
     // The main loop
-    return repl(root, env, no_print);
+    return repl(root, env, tty);
 }
