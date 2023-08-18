@@ -1014,7 +1014,7 @@ static Obj *prim_listp(void *root, Obj **env, Obj **list) {
     return is_list(eval(root, env, tmp)) ? True : Nil;
 }
 
-static int repl(void *root, Obj **env, bool print);
+static int repl(void *root, Obj **env, bool prn);
 
 // (load <string>)
 static Obj *prim_load(void *root, Obj **env, Obj **list) {
@@ -1091,7 +1091,7 @@ static bool getEnvFlag(char *name) {
 }
 
 // Read–eval–print loop
-static int repl(void *root, Obj **env, bool print) {
+static int repl(void *root, Obj **env, bool prn) {
     DEFINE1(expr);
     for (;;) {
         *expr = read_expr(root);
@@ -1102,7 +1102,7 @@ static int repl(void *root, Obj **env, bool print) {
         if (*expr == Dot)
             error("Stray dot");
         Obj *obj = eval(root, env, expr);
-        if (!print)
+        if (!prn)
             continue;
         print(obj, true);
         printf("\n");
@@ -1115,7 +1115,7 @@ int main(int argc, char **argv) {
     always_gc = getEnvFlag("MINILISP_ALWAYS_GC");
 
     // Other flags
-    bool tty = isatty(STDIN_FILENO);
+    bool tty = getEnvFlag("MINILISP_TTY") || isatty(STDIN_FILENO);
 
     // Memory allocation
     memory = alloc_semispace();

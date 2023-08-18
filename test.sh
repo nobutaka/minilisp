@@ -23,8 +23,8 @@ function do_run() {
 function run() {
   echo -n "Testing $1 ... "
   # Run the tests twice to test the garbage collector with different settings.
-  MINILISP_ALWAYS_GC= do_run "$@"
-  MINILISP_ALWAYS_GC=1 do_run "$@"
+  MINILISP_ALWAYS_GC=  MINILISP_TTY=1 do_run "$@"
+  MINILISP_ALWAYS_GC=1 MINILISP_TTY=1 do_run "$@"
   echo ok
 }
 
