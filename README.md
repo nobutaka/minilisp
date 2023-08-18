@@ -1,8 +1,7 @@
 (My) MiniLisp
 =============
 
-Welcome to my custom version of the "minilisp" repository!
+Welcome to my "minilisp" repository!
 
-This is where I tinker and play with my own spin on [the original "minilisp" project](https://github.com/rui314/minilisp).
-While I'm inspired by the original, I'm adding my personal touch to make it uniquely mine.
-Think of this repository as my coding sandbox where I have fun exploring.
+Here I play with [the original "minilisp" project](https://github.com/rui314/minilisp) with my own twist.
+Inspired by the original "minilisp" but with my own unique touch. Think of this repository as my coding sandbox.
