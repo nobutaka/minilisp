@@ -876,18 +876,23 @@ PRIM(mul, *, 1)
 #undef PRIM
 
 // (- <number> ...)
-static Obj *prim_minus(void *root, Obj **env, Obj **list) {
-    Obj *args = eval_list(root, env, list);
-    for (Obj *p = args; p != Nil; p = p->cdr)
-        if (p->car->type != TNUMBER)
-            error("- takes only numbers");
-    if (args->cdr == Nil)
-        return make_number(root, -args->car->value);
-    double r = args->car->value;
-    for (Obj *p = args->cdr; p != Nil; p = p->cdr)
-        r -= p->car->value;
-    return make_number(root, r);
+// (/ <number> ...)
+#define PRIM(name, op, inv)                                                        \
+static Obj *prim_##name(void *root, Obj **env, Obj **list) {                       \
+    Obj *args = eval_list(root, env, list);                                        \
+    for (Obj *p = args; p != Nil; p = p->cdr)                                      \
+        if (p->car->type != TNUMBER)                                               \
+            error(#op" takes only numbers");                                       \
+    if (args->cdr == Nil)                                                          \
+        return make_number(root, inv args->car->value);                            \
+    double r = args->car->value;                                                   \
+    for (Obj *p = args->cdr; p != Nil; p = p->cdr)                                 \
+        r op##= p->car->value;                                                     \
+    return make_number(root, r);                                                   \
 }
+PRIM(sub, -, -)
+PRIM(div, /, 1/)
+#undef PRIM
 
 // (< <number> <number>)
 static Obj *prim_lt(void *root, Obj **env, Obj **list) {
@@ -1069,7 +1074,8 @@ static void define_primitives(void *root, Obj **env) {
     add_primitive(root, env, "gensym", prim_gensym);
     add_primitive(root, env, "+", prim_add);
     add_primitive(root, env, "*", prim_mul);
-    add_primitive(root, env, "-", prim_minus);
+    add_primitive(root, env, "-", prim_sub);
+    add_primitive(root, env, "/", prim_div);
     add_primitive(root, env, "<", prim_lt);
     add_primitive(root, env, "define", prim_define);
     add_primitive(root, env, "defun", prim_defun);
