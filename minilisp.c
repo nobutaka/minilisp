@@ -860,15 +860,20 @@ static Obj *prim_gensym(void *root, Obj **env, Obj **list) {
 }
 
 // (+ <number> ...)
-static Obj *prim_plus(void *root, Obj **env, Obj **list) {
-    double sum = 0;
-    for (Obj *args = eval_list(root, env, list); args != Nil; args = args->cdr) {
-        if (args->car->type != TNUMBER)
-            error("+ takes only numbers");
-        sum += args->car->value;
-    }
-    return make_number(root, sum);
+// (* <number> ...)
+#define PRIM(name, op, init)                                                       \
+static Obj *prim_##name(void *root, Obj **env, Obj **list) {                       \
+    double r = init;                                                               \
+    for (Obj *args = eval_list(root, env, list); args != Nil; args = args->cdr) {  \
+        if (args->car->type != TNUMBER)                                            \
+            error(#op" takes only numbers");                                       \
+        r op##= args->car->value;                                                  \
+    }                                                                              \
+    return make_number(root, r);                                                   \
 }
+PRIM(add, +, 0)
+PRIM(mul, *, 1)
+#undef PRIM
 
 // (- <number> ...)
 static Obj *prim_minus(void *root, Obj **env, Obj **list) {
@@ -1062,7 +1067,8 @@ static void define_primitives(void *root, Obj **env) {
     add_primitive(root, env, "setcar", prim_setcar);
     add_primitive(root, env, "while", prim_while);
     add_primitive(root, env, "gensym", prim_gensym);
-    add_primitive(root, env, "+", prim_plus);
+    add_primitive(root, env, "+", prim_add);
+    add_primitive(root, env, "*", prim_mul);
     add_primitive(root, env, "-", prim_minus);
     add_primitive(root, env, "<", prim_lt);
     add_primitive(root, env, "define", prim_define);
