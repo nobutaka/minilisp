@@ -28,8 +28,6 @@ function run() {
   echo ok
 }
 
-lib='(load "lib.lisp")'
-
 # Basic data types
 run integer 1 1
 run integer -1 -1
@@ -183,6 +181,7 @@ run c-rand '()' '(= (c-rand) (c-rand))'
 run c-sin 0 '(c-sin 0)'
 
 # lib.lisp
+lib='(load "lib.lisp")'
 run caar 1 "$lib (caar '((1 . 2) . 3))"
 run list '(1 2)' "$lib (list 1 2)"
 run not t "$lib (not ())"
