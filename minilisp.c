@@ -860,6 +860,7 @@ static Obj *prim_gensym(void *root, Obj **env, Obj **list) {
 }
 
 // (+ <number> ...)
+// (* <number> ...)
 #define PRIM(name, op, init)                                                       \
 static Obj *prim_##name(void *root, Obj **env, Obj **list) {                       \
     double r = init;                                                               \
@@ -870,7 +871,8 @@ static Obj *prim_##name(void *root, Obj **env, Obj **list) {                    
     }                                                                              \
     return make_number(root, r);                                                   \
 }
-PRIM(plus, +, 0)
+PRIM(add, +, 0)
+PRIM(mul, *, 1)
 #undef PRIM
 
 // (- <number> ...)
@@ -1065,7 +1067,8 @@ static void define_primitives(void *root, Obj **env) {
     add_primitive(root, env, "setcar", prim_setcar);
     add_primitive(root, env, "while", prim_while);
     add_primitive(root, env, "gensym", prim_gensym);
-    add_primitive(root, env, "+", prim_plus);
+    add_primitive(root, env, "+", prim_add);
+    add_primitive(root, env, "*", prim_mul);
     add_primitive(root, env, "-", prim_minus);
     add_primitive(root, env, "<", prim_lt);
     add_primitive(root, env, "define", prim_define);
