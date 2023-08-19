@@ -179,14 +179,14 @@ run princ 'foo()' '(princ "foo")'
 run load '()' '(load "lib.lisp")'
 
 # C library functions
-run c-fopen '<pointer>' '(c-fopen "test.sh" "r")'
-run c-fopen '()' '(c-fopen "missing" "r")'
-run c-fclose 0 '(c-fclose (c-fopen "test.sh" "r"))'
-run c-putchar A65 '(c-putchar 65)'
-run c-exit '' '(c-exit 0)'
-run c-free '()' '(c-free ())'
-run c-rand '()' '(= (c-rand) (c-rand))'
-run c-sin 0 '(c-sin 0)'
+run fopen '<pointer>' '(fopen "test.sh" "r")'
+run fopen '()' '(fopen "missing" "r")'
+run fclose 0 '(fclose (fopen "test.sh" "r"))'
+run putchar A65 '(putchar 65)'
+run exit '' '(exit 0)'
+run free '()' '(free ())'
+run rand '()' '(= (rand) (rand))'
+run sin 0 '(sin 0)'
 
 # lib.lisp
 lib='(load "lib.lisp")'
