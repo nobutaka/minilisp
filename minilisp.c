@@ -860,15 +860,18 @@ static Obj *prim_gensym(void *root, Obj **env, Obj **list) {
 }
 
 // (+ <number> ...)
-static Obj *prim_plus(void *root, Obj **env, Obj **list) {
-    double sum = 0;
-    for (Obj *args = eval_list(root, env, list); args != Nil; args = args->cdr) {
-        if (args->car->type != TNUMBER)
-            error("+ takes only numbers");
-        sum += args->car->value;
-    }
-    return make_number(root, sum);
+#define PRIM(name, op, init)                                                       \
+static Obj *prim_##name(void *root, Obj **env, Obj **list) {                       \
+    double r = init;                                                               \
+    for (Obj *args = eval_list(root, env, list); args != Nil; args = args->cdr) {  \
+        if (args->car->type != TNUMBER)                                            \
+            error(#op" takes only numbers");                                       \
+        r op##= args->car->value;                                                  \
+    }                                                                              \
+    return make_number(root, r);                                                   \
 }
+PRIM(plus, +, 0)
+#undef PRIM
 
 // (- <number> ...)
 static Obj *prim_minus(void *root, Obj **env, Obj **list) {
