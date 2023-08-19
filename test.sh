@@ -41,6 +41,7 @@ run quote a "(quote a)"
 run quote 63 "'63"
 run quote '(+ 1 2)' "'(+ 1 2)"
 
+run + 0 '(+)'
 run + 3 '(+ 1 2)'
 run + -2 '(+ 1 -3)'
 run flonum+ -1.9 '(+ 1.1 -3)'
