@@ -18,7 +18,7 @@ all: minish minigfx
 minish: minilisp.c minish.c
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ minish.c
 
-minigfx: minilisp.c tigr.c minigfx.c
+minigfx: minilisp.c tigr.h tigr.c minigfx.c
 	$(CC) $(CFLAGS) $(LDFLAGS) $(LDFLAGS_GFX) -o $@ tigr.c minigfx.c
 
 clean:
