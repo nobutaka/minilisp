@@ -15,10 +15,10 @@ endif
 .PHONY: clean test
 
 minish: minilisp.c minish.c
-	$(CC) $(CFLAGS) $(LDFLAGS) -o minish minish.c
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ minish.c
 
 minigfx: minilisp.c tigr.c minigfx.c
-	$(CC) $(CFLAGS) $(LDFLAGS) $(GFX_LDFLAGS) -o minigfx tigr.c minigfx.c
+	$(CC) $(CFLAGS) $(LDFLAGS) $(GFX_LDFLAGS) -o $@ tigr.c minigfx.c
 
 clean:
 	rm -f minish minigfx *~
