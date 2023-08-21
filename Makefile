@@ -1,9 +1,10 @@
-CFLAGS = -std=gnu99 -g -O2 -Wall
+CFLAGS = -std=gnu99 -Os -Wall
+LDFLAGS = -s
 
 .PHONY: clean test
 
 minish: minilisp.c minish.c
-	$(CC) $(CFLAGS) -o minish minish.c
+	$(CC) $(CFLAGS) $(LDFLAGS) -o minish minish.c
 
 clean:
 	rm -f minish minigfx *~
