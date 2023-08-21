@@ -1,4 +1,3 @@
-#define MINILISP_EXT
 #include "minilisp.c"
 
 #include <math.h>
@@ -96,4 +95,63 @@ static void define_library(void *root, Obj **env) {
     add_primitive(root, env, "free", prim_free);
     add_primitive(root, env, "rand", prim_rand);
     add_primitive(root, env, "sin", prim_sin);
+}
+
+//======================================================================
+// Entry point
+//======================================================================
+
+// Returns true if the environment variable is defined and not the empty string.
+static bool getEnvFlag(char *name) {
+    char *val = getenv(name);
+    return val && val[0];
+}
+
+// Read–eval–print loop
+static int repl(void *root, Obj **env, bool prn) {
+    DEFINE1(expr);
+    for (;;) {
+        *expr = read_expr(root);
+        if (!*expr)
+            return 0;
+        if (*expr == Cparen)
+            error("Stray close parenthesis");
+        if (*expr == Dot)
+            error("Stray dot");
+        Obj *obj = eval(root, env, expr);
+        if (!prn)
+            continue;
+        print(obj, true);
+        printf("\n");
+    }
+}
+
+int main(int argc, char **argv) {
+    // Debug flags
+    debug_gc = getEnvFlag("MINILISP_DEBUG_GC");
+    always_gc = getEnvFlag("MINILISP_ALWAYS_GC");
+
+    // Other flags
+    bool prn = getEnvFlag("MINILISP_PRN") || isatty(STDIN_FILENO);
+
+    // Memory allocation
+    memory = alloc_semispace();
+
+    // Constants, primitives and library
+    Symbols = Nil;
+    void *root = NULL;
+    DEFINE1(env);
+    *env = make_env(root, &Nil, &Nil);
+    define_constants(root, env);
+    define_primitives(root, env);
+    define_library(root, env);
+
+    // Mark a return point
+    setjmp(exception_env);
+
+    // Set up the reader
+    input = stdin;
+
+    // The main loop
+    return repl(root, env, prn);
 }
