@@ -12,7 +12,9 @@ else
 	endif
 endif
 
-.PHONY: clean test
+.PHONY: all clean test
+
+all: minish minigfx
 
 minish: minilisp.c minish.c
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ minish.c
