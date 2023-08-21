@@ -1,3 +1,4 @@
+#include "minilisp.c"
 #include "tigr.h"
 
 int main(int argc, char *argv[]) {
