@@ -6,7 +6,7 @@ minish: minilisp.c minish.c
 	$(CC) $(CFLAGS) -o minish minish.c
 
 clean:
-	rm -f minish *~
+	rm -f minish minigfx *~
 
 test: minish
 	@./test.sh
