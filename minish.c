@@ -107,25 +107,6 @@ static bool getEnvFlag(char *name) {
     return val && val[0];
 }
 
-// Read–eval–print loop
-static int repl(void *root, Obj **env, bool prn) {
-    DEFINE1(expr);
-    for (;;) {
-        *expr = read_expr(root);
-        if (!*expr)
-            return 0;
-        if (*expr == Cparen)
-            error("Stray close parenthesis");
-        if (*expr == Dot)
-            error("Stray dot");
-        Obj *obj = eval(root, env, expr);
-        if (!prn)
-            continue;
-        print(obj, true);
-        printf("\n");
-    }
-}
-
 int main(int argc, char *argv[]) {
     // Debug flags
     debug_gc = getEnvFlag("MINILISP_DEBUG_GC");

@@ -1090,3 +1090,25 @@ static void define_primitives(void *root, Obj **env) {
     add_primitive(root, env, "princ", prim_princ);
     add_primitive(root, env, "load", prim_load);
 }
+
+//======================================================================
+// Read–eval–print loop
+//======================================================================
+
+static int repl(void *root, Obj **env, bool prn) {
+    DEFINE1(expr);
+    for (;;) {
+        *expr = read_expr(root);
+        if (!*expr)
+            return 0;
+        if (*expr == Cparen)
+            error("Stray close parenthesis");
+        if (*expr == Dot)
+            error("Stray dot");
+        Obj *obj = eval(root, env, expr);
+        if (!prn)
+            continue;
+        print(obj, true);
+        printf("\n");
+    }
+}
