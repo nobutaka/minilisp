@@ -2,11 +2,11 @@ CFLAGS=-std=gnu99 -g -O2 -Wall
 
 .PHONY: clean test
 
-minilisp: minilisp.c minilisp-ext.c
-	$(CC) $(CFLAGS) -o minilisp minilisp-ext.c
+minish: minilisp.c minish.c
+	$(CC) $(CFLAGS) -o minish minish.c
 
 clean:
-	rm -f minilisp *~
+	rm -f minish *~
 
-test: minilisp
+test: minish
 	@./test.sh
