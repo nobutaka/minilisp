@@ -1,6 +1,6 @@
 #include "tigr.h"
 
-int main(int argc, char **argv) {
+int main(int argc, char *argv[]) {
     Tigr *screen = tigrWindow(320, 240, "minigfx", 0);
     while (!tigrClosed(screen) && !tigrKeyDown(screen, TK_ESCAPE)) {
         tigrClear(screen, tigrRGB(0x80, 0x90, 0xa0));
