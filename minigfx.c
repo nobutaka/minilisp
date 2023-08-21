@@ -1,6 +1,10 @@
 #include "minilisp.c"
 #include "tigr.h"
 
+//======================================================================
+// Entry point
+//======================================================================
+
 int main(int argc, char *argv[]) {
     Tigr *screen = tigrWindow(320, 240, "minigfx", 0);
     while (!tigrClosed(screen) && !tigrKeyDown(screen, TK_ESCAPE)) {
