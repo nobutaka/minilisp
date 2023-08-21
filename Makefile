@@ -1,5 +1,6 @@
 CFLAGS = -std=gnu99 -Os -Wall
 LDFLAGS = -s
+
 ifeq ($(OS),Windows_NT)
 	GFX_LDFLAGS = -lopengl32 -lgdi32 -mwindows
 else
