@@ -8,7 +8,7 @@ else
 	ifeq ($(UNAME_S),Darwin)
 		GFX_LDFLAGS = -framework OpenGL -framework Cocoa
 	else ifeq ($(UNAME_S),Linux)
-		GFX_LDFLAGS = -s -lGLU -lGL -lX11
+		GFX_LDFLAGS = -lGLU -lGL -lX11
 	endif
 endif
 
@@ -18,7 +18,7 @@ minish: minilisp.c minish.c
 	$(CC) $(CFLAGS) $(LDFLAGS) -o minish minish.c
 
 minigfx: minilisp.c tigr.c minigfx.c
-	$(CC) $(CFLAGS) $(GFX_LDFLAGS) -o minigfx tigr.c minigfx.c
+	$(CC) $(CFLAGS) $(LDFLAGS) $(GFX_LDFLAGS) -o minigfx tigr.c minigfx.c
 
 clean:
 	rm -f minish minigfx *~
