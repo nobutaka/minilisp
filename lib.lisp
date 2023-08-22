@@ -16,6 +16,11 @@
   (list 'let1 'it test
     (cons 'if (cons 'it (cons then else)))))
 
+(defmacro and (expr . rest)
+  (if rest
+      (list 'if expr (cons 'and rest))
+    expr))
+
 (defmacro or (expr . rest)
   (if rest
       (let1 var (gensym)
