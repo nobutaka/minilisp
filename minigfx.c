@@ -94,7 +94,7 @@ static Obj *prim_tigrClear(void *root, Obj **env, Obj **list) {
         error("Parameter #0 must be a pointer");
     if (arg1->type != TNUMBER)
         error("Parameter #1 must be a number");
-    tigrClear(arg0->ptr, arg1->value);
+    tigrClear(arg0->ptr, unpackTPixel(arg1->value));
     return Nil;
 }
 
@@ -112,7 +112,7 @@ static Obj *prim_tigrRGB(void *root, Obj **env, Obj **list) {
         error("Parameter #1 must be a number");
     if (arg2->type != TNUMBER)
         error("Parameter #2 must be a number");
-    return make_number(root, tigrRGB(arg0->value, arg1->value, arg2->value));
+    return make_number(root, packTPixel(tigrRGB(arg0->value, arg1->value, arg2->value)));
 }
 
 // (tigrPrint <pointer> <pointer> <number> <number> <number> <string>) -> <void>
@@ -138,13 +138,13 @@ static Obj *prim_tigrPrint(void *root, Obj **env, Obj **list) {
         error("Parameter #4 must be a number");
     if (arg5->type != TSTRING)
         error("Parameter #5 must be a string");
-    tigrPrint(arg0->ptr, arg1->ptr, arg2->value, arg3->value, arg4->value, arg5->str);
+    tigrPrint(arg0->ptr, arg1->ptr, arg2->value, arg3->value, unpackTPixel(arg4->value), arg5->str);
     return Nil;
 }
 
 // (tfont) -> <pointer>
 static Obj *prim_tfont(void *root, Obj **env, Obj **list) {
-    return make_pointer(root, tfont());
+    return make_pointer(root, tfont);
 }
 
 // (tigrKeyDown <pointer> <number>) -> <number>
