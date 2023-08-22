@@ -5,7 +5,7 @@
 // C library functions
 //======================================================================
 
-// (fopen <string> <string>)
+// (fopen <string> <string>) -> <pointer?>
 static Obj *prim_fopen(void *root, Obj **env, Obj **list) {
     if (length(*list) != 2)
         error("Malformed fopen");
@@ -19,7 +19,7 @@ static Obj *prim_fopen(void *root, Obj **env, Obj **list) {
     return make_pointer(root, fopen(arg0->str, arg1->str));
 }
 
-// (fclose <pointer>)
+// (fclose <pointer>) -> <number>
 static Obj *prim_fclose(void *root, Obj **env, Obj **list) {
     if (length(*list) != 1)
         error("Malformed fclose");
@@ -31,7 +31,7 @@ static Obj *prim_fclose(void *root, Obj **env, Obj **list) {
     return make_number(root, fclose(arg0->ptr));
 }
 
-// (putchar <number>)
+// (putchar <number>) -> <number>
 static Obj *prim_putchar(void *root, Obj **env, Obj **list) {
     if (length(*list) != 1)
         error("Malformed putchar");
@@ -43,7 +43,7 @@ static Obj *prim_putchar(void *root, Obj **env, Obj **list) {
     return make_number(root, putchar(arg0->value));
 }
 
-// (exit <number>)
+// (exit <number>) -> <void>
 static Obj *prim_exit(void *root, Obj **env, Obj **list) {
     if (length(*list) != 1)
         error("Malformed exit");
@@ -56,7 +56,7 @@ static Obj *prim_exit(void *root, Obj **env, Obj **list) {
     return Nil;
 }
 
-// (free <pointer?>)
+// (free <pointer?>) -> <void>
 static Obj *prim_free(void *root, Obj **env, Obj **list) {
     if (length(*list) != 1)
         error("Malformed free");
@@ -69,12 +69,12 @@ static Obj *prim_free(void *root, Obj **env, Obj **list) {
     return Nil;
 }
 
-// (rand)
+// (rand) -> <number>
 static Obj *prim_rand(void *root, Obj **env, Obj **list) {
     return make_number(root, rand());
 }
 
-// (sin <number>)
+// (sin <number>) -> <number>
 static Obj *prim_sin(void *root, Obj **env, Obj **list) {
     if (length(*list) != 1)
         error("Malformed sin");
