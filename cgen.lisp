@@ -1,7 +1,5 @@
 (load "lib.lisp")
 
-;;;;;;;;;;
-
 (define nilables  '(                        (string? . string)      (pointer? . pointer)                  ))
 (define ttypes    '((number  . TNUMBER)     (string  . TSTRING)     (pointer  . TPOINTER)     (nil . TNIL)))
 (define ->values  '((number  . ->value)     (string  . ->str)       (pointer  . ->ptr)                    ))
@@ -71,16 +69,3 @@
 (defun write-defs (decls)
   (write-tree (map (lambda (decl) (def-prim (car decl) (cadr decl) (cddr decl))) decls))
   (write-tree (def-lib (map cadr decls))))
-
-;;;;;;;;;;
-
-(define decls
-  '((pointer? fopen string string)
-    (number fclose pointer)
-    (number putchar number)
-    (void exit number)
-    (void free pointer?)
-    (number rand)
-    (number sin number)))
-
-(write-defs decls)
