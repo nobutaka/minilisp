@@ -6,7 +6,7 @@
   (number tigrClosed pointer)                       ; int tigrClosed(Tigr *bmp);
   (void tigrUpdate pointer)                         ; void tigrUpdate(Tigr *bmp);
   (void tigrClear pointer number)                   ; void tigrClear(Tigr *bmp, TPixel color);
-  (number tigrRGB number number number)             ; TPixel tigrRGB(unsigned char r, unsigned char g, unsigned char b)
+  (number tigrRGB number number number)             ; TPixel tigrRGB(unsigned char r, unsigned char g, unsigned char b);
   (number tigrKeyDown pointer number)               ; int tigrKeyDown(Tigr *bmp, int key);
 ))
 
