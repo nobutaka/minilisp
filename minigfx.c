@@ -13,18 +13,6 @@ static TPixel unpackTPixel(uint32_t p) {
     return *(TPixel *)&p;
 }
 
-// (tigr)
-static Obj *prim_tigr(void *root, Obj **env, Obj **list) {
-    Tigr *screen = tigrWindow(320, 240, "minigfx", 0);
-    while (!tigrClosed(screen) && !tigrKeyDown(screen, TK_ESCAPE)) {
-        tigrClear(screen, tigrRGB(0x80, 0x90, 0xa0));
-        tigrPrint(screen, tfont, 120, 110, tigrRGB(0xff, 0xff, 0xff), "Hello, world.");
-        tigrUpdate(screen);
-    }
-    tigrFree(screen);
-    return Nil;
-}
-
 // (tigrWindow <number> <number> <string> <number>) -> <pointer>
 static Obj *prim_tigrWindow(void *root, Obj **env, Obj **list) {
     if (length(*list) != 4)
@@ -162,7 +150,6 @@ static Obj *prim_tigrKeyDown(void *root, Obj **env, Obj **list) {
 }
 
 static void define_library(void *root, Obj **env) {
-    add_primitive(root, env, "tigr", prim_tigr);
     add_primitive(root, env, "tigrWindow", prim_tigrWindow);
     add_primitive(root, env, "tigrFree", prim_tigrFree);
     add_primitive(root, env, "tigrClosed", prim_tigrClosed);
