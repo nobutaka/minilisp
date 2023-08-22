@@ -1031,7 +1031,7 @@ static Obj *prim_listp(void *root, Obj **env, Obj **list) {
 
 static int repl(void *root, Obj **env, bool prn);
 
-// (load <string>)
+// (load <string>) -> <void>
 static Obj *prim_load(void *root, Obj **env, Obj **list) {
     if (length(*list) != 1)
         error("Malformed load");
