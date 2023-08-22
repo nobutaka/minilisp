@@ -68,6 +68,10 @@
       (map add-prim fnames)
     "}\n\n"))
 
+(defun write-defs (decls)
+  (write-tree (map (lambda (decl) (def-prim (car decl) (cadr decl) (cddr decl))) decls))
+  (write-tree (def-lib (map cadr decls))))
+
 ;;;;;;;;;;
 
 (define decls
@@ -79,5 +83,4 @@
     (number rand)
     (number sin number)))
 
-(write-tree (map (lambda (decl) (def-prim (car decl) (cadr decl) (cddr decl))) decls))
-(write-tree (def-lib (map cadr decls)))
+(write-defs decls)
