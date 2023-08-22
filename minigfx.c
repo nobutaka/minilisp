@@ -17,6 +17,14 @@ static Obj *prim_tigr(void *root, Obj **env, Obj **list) {
     return Nil;
 }
 
+static uint32_t packTPixel(TPixel p) {
+    return *(uint32_t *)&p;
+}
+
+static TPixel unpackTPixel(uint32_t p) {
+    return *(TPixel *)&p;
+}
+
 static void define_library(void *root, Obj **env) {
     add_primitive(root, env, "tigr", prim_tigr);
 }
