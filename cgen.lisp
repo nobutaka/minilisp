@@ -42,7 +42,7 @@
 
 (defun def-prim (rtype fname ptypes)
   (list
-    (list "// (" fname (map (lambda (ptype) (list " <" ptype ">")) ptypes) ")\n")
+    (list "// (" fname (map (lambda (ptype) (list " <" ptype ">")) ptypes) ") -> <" rtype ">\n")
     (list "static Obj *prim_" fname "(void *root, Obj **env, Obj **list) {\n")
   (if ptypes
     (list "    if (length(*list) != " (length ptypes) ")\n"
