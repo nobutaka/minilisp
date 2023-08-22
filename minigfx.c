@@ -5,6 +5,14 @@
 // C library functions
 //======================================================================
 
+static uint32_t packTPixel(TPixel p) {
+    return *(uint32_t *)&p;
+}
+
+static TPixel unpackTPixel(uint32_t p) {
+    return *(TPixel *)&p;
+}
+
 // (tigr)
 static Obj *prim_tigr(void *root, Obj **env, Obj **list) {
     Tigr *screen = tigrWindow(320, 240, "minigfx", 0);
@@ -15,14 +23,6 @@ static Obj *prim_tigr(void *root, Obj **env, Obj **list) {
     }
     tigrFree(screen);
     return Nil;
-}
-
-static uint32_t packTPixel(TPixel p) {
-    return *(uint32_t *)&p;
-}
-
-static TPixel unpackTPixel(uint32_t p) {
-    return *(TPixel *)&p;
 }
 
 static void define_library(void *root, Obj **env) {
