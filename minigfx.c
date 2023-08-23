@@ -5,6 +5,19 @@
 // C library functions
 //======================================================================
 
+// (exit <number>) -> <void>
+static Obj *prim_exit(void *root, Obj **env, Obj **list) {
+    if (length(*list) != 1)
+        error("Malformed exit");
+    DEFINE1(tmp);
+    *tmp = (*list)->car;
+    Obj *arg0 = eval(root, env, tmp);
+    if (arg0->type != TNUMBER)
+        error("Parameter #0 must be a number");
+    exit(arg0->value);
+    return Nil;
+}
+
 static uint32_t packTPixel(TPixel p) {
     return *(uint32_t *)&p;
 }
@@ -155,6 +168,7 @@ static Obj *prim_tigrTime(void *root, Obj **env, Obj **list) {
 }
 
 static void define_library(void *root, Obj **env) {
+    add_primitive(root, env, "exit", prim_exit);
     add_primitive(root, env, "tigrWindow", prim_tigrWindow);
     add_primitive(root, env, "tigrFree", prim_tigrFree);
     add_primitive(root, env, "tigrClosed", prim_tigrClosed);
