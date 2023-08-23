@@ -18,6 +18,10 @@ static Obj *prim_exit(void *root, Obj **env, Obj **list) {
     return Nil;
 }
 
+//======================================================================
+// TIGR functions
+//======================================================================
+
 static uint32_t packTPixel(TPixel p) {
     return *(uint32_t *)&p;
 }
