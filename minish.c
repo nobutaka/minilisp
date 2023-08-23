@@ -110,8 +110,6 @@ int main(int argc, char *argv[]) {
     // Debug flags
     debug_gc = getEnvFlag("MINILISP_DEBUG_GC");
     always_gc = getEnvFlag("MINILISP_ALWAYS_GC");
-
-    // Other flags
     bool prn = getEnvFlag("MINILISP_PRN");
 
     // Memory allocation
