@@ -134,5 +134,5 @@ int main(int argc, char *argv[]) {
     }
 
     // The main loop
-    return repl(root, env, prn || (input == stdin && isatty(STDIN_FILENO)));
+    return repl(root, env, prn || input == stdin && isatty(STDIN_FILENO));
 }
