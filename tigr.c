@@ -1952,11 +1952,13 @@ TigrInternal* tigrInternal(Tigr* bmp) {
 #include <stdlib.h>
 #include <stddef.h>
 
+#ifdef _MSC_VER
 #pragma comment(lib, "opengl32")  // glViewport
 #pragma comment(lib, "shell32")   // CommandLineToArgvW
 #pragma comment(lib, "user32")    // SetWindowLong
 #pragma comment(lib, "gdi32")     // ChoosePixelFormat
 #pragma comment(lib, "advapi32")  // RegSetValueEx
+#endif
 
 #define WIDGET_SCALE 3
 #define WIDGET_FADE 16
