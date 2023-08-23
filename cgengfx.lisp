@@ -1,6 +1,7 @@
 (load "cgen.lisp")
 
 (define decls '(
+  (void exit number)                                            ; void exit(int status);
   (pointer tigrWindow number number string number)              ; Tigr *tigrWindow(int w, int h, const char *title, int flags);
   (void tigrFree pointer)                                       ; void tigrFree(Tigr *bmp);
   (number tigrClosed pointer)                                   ; int tigrClosed(Tigr *bmp);
