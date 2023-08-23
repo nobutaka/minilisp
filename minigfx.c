@@ -149,6 +149,11 @@ static Obj *prim_tigrKeyDown(void *root, Obj **env, Obj **list) {
     return make_number(root, tigrKeyDown(arg0->ptr, arg1->value));
 }
 
+// (tigrTime) -> <number>
+static Obj *prim_tigrTime(void *root, Obj **env, Obj **list) {
+    return make_number(root, tigrTime());
+}
+
 static void define_library(void *root, Obj **env) {
     add_primitive(root, env, "tigrWindow", prim_tigrWindow);
     add_primitive(root, env, "tigrFree", prim_tigrFree);
@@ -159,6 +164,7 @@ static void define_library(void *root, Obj **env) {
     add_primitive(root, env, "tigrPrint", prim_tigrPrint);
     add_primitive(root, env, "tfont", prim_tfont);
     add_primitive(root, env, "tigrKeyDown", prim_tigrKeyDown);
+    add_primitive(root, env, "tigrTime", prim_tigrTime);
 }
 
 //======================================================================

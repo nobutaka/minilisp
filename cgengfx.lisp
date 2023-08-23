@@ -10,6 +10,7 @@
   (void tigrPrint pointer pointer number number number string)  ; void tigrPrint(Tigr *dest, TigrFont *font, int x, int y, TPixel color, const char *text, ...);
   (pointer tfont)                                               ; TigrFont *tfont;
   (number tigrKeyDown pointer number)                           ; int tigrKeyDown(Tigr *bmp, int key);
+  (number tigrTime)                                             ; float tigrTime(void);
 ))
 
 (write-defs decls)
