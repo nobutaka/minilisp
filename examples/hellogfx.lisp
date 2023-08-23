@@ -1,6 +1,5 @@
 (load "lib.lisp")
-(define tfont (tfont))
-(define TK_ESCAPE 164)
+(load "libgfx.lisp")
 
 (define screen (tigrWindow 320 240 "Hello" 0))
 (while (and (= (tigrClosed screen) 0) (= (tigrKeyDown screen TK_ESCAPE) 0))
