@@ -112,7 +112,7 @@ int main(int argc, char *argv[]) {
     always_gc = getEnvFlag("MINILISP_ALWAYS_GC");
 
     // Other flags
-    bool prn = getEnvFlag("MINILISP_PRN") || isatty(STDIN_FILENO);
+    bool prn = getEnvFlag("MINILISP_PRN");
 
     // Memory allocation
     memory = alloc_semispace();
@@ -136,5 +136,5 @@ int main(int argc, char *argv[]) {
     }
 
     // The main loop
-    return repl(root, env, prn);
+    return repl(root, env, prn || (input == stdin && isatty(STDIN_FILENO)));
 }
