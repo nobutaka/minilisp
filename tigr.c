@@ -2343,7 +2343,7 @@ Tigr* tigrWindow(int w, int h, const char* title, int flags) {
     HWND hWnd;
     DWORD dwStyle;
     RECT rc;
-    DWORD err;
+    DWORD err __attribute((unused));
     Tigr* bmp;
     TigrInternal* win;
 #ifndef TIGR_DO_NOT_PRESERVE_WINDOW_POSITION
