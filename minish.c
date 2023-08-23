@@ -127,10 +127,13 @@ int main(int argc, char *argv[]) {
     define_library(root, env);
 
     // Mark a return point
-    setjmp(exception_env);
-
-    // Set up the reader
-    input = stdin;
+    if (setjmp(exception_env) == 0) {
+        // Set up the reader
+        input = 1 < argc ? fopen(argv[1], "r") : stdin;
+    } else {
+        // Re-set up the reader
+        input = stdin;
+    }
 
     // The main loop
     return repl(root, env, prn);
