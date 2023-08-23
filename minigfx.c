@@ -179,12 +179,14 @@ int main(int argc, char *argv[]) {
     define_library(root, env);
 
     // Mark a return point
-    if (setjmp(exception_env) != 0)
-        exit(1);
-
-    // Set up the reader
-    input = 1 < argc ? fopen(argv[1], "r") : stdin;
+    if (setjmp(exception_env) == 0) {
+        // Set up the reader
+        input = 1 < argc ? fopen(argv[1], "r") : stdin;
+    } else {
+        // Re-set up the reader
+        input = stdin;
+    }
 
     // The main loop
-    return repl(root, env, false);
+    return repl(root, env, input == stdin && isatty(STDIN_FILENO));
 }
