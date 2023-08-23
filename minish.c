@@ -110,9 +110,7 @@ int main(int argc, char *argv[]) {
     // Debug flags
     debug_gc = getEnvFlag("MINILISP_DEBUG_GC");
     always_gc = getEnvFlag("MINILISP_ALWAYS_GC");
-
-    // Other flags
-    bool prn = getEnvFlag("MINILISP_PRN") || isatty(STDIN_FILENO);
+    bool prn = getEnvFlag("MINILISP_PRN");
 
     // Memory allocation
     memory = alloc_semispace();
@@ -127,11 +125,14 @@ int main(int argc, char *argv[]) {
     define_library(root, env);
 
     // Mark a return point
-    setjmp(exception_env);
-
-    // Set up the reader
-    input = stdin;
+    if (setjmp(exception_env) == 0) {
+        // Set up the reader
+        input = 1 < argc ? fopen(argv[1], "r") : stdin;
+    } else {
+        // Re-set up the reader
+        input = stdin;
+    }
 
     // The main loop
-    return repl(root, env, prn);
+    return repl(root, env, prn || (input == stdin && isatty(STDIN_FILENO)));
 }
