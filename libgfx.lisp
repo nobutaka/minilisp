@@ -2,7 +2,6 @@
 
 (define tfont (tfont))
 (define TK_ESCAPE 164)
-
 (define dt 0)
 
 (defun loop ()
