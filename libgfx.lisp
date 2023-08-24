@@ -11,6 +11,5 @@
   (tigrUpdate screen))
 
 (defun step ()
-  (tigrTime)
-  (update (tigrTime))
+  (update (/ 60))
   (tigrUpdate screen))
