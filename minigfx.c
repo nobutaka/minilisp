@@ -154,6 +154,30 @@ static Obj *prim_tigrCircle(void *root, Obj **env, Obj **list) {
     return Nil;
 }
 
+// (tigrFillCircle <pointer> <number> <number> <number> <number>) -> <void>
+static Obj *prim_tigrFillCircle(void *root, Obj **env, Obj **list) {
+    if (length(*list) != 5)
+        error("Malformed tigrFillCircle");
+    Obj *args = eval_list(root, env, list);
+    Obj *arg0 = args->car;
+    Obj *arg1 = args->cdr->car;
+    Obj *arg2 = args->cdr->cdr->car;
+    Obj *arg3 = args->cdr->cdr->cdr->car;
+    Obj *arg4 = args->cdr->cdr->cdr->cdr->car;
+    if (arg0->type != TPOINTER)
+        error("Parameter #0 must be a pointer");
+    if (arg1->type != TNUMBER)
+        error("Parameter #1 must be a number");
+    if (arg2->type != TNUMBER)
+        error("Parameter #2 must be a number");
+    if (arg3->type != TNUMBER)
+        error("Parameter #3 must be a number");
+    if (arg4->type != TNUMBER)
+        error("Parameter #4 must be a number");
+    tigrFillCircle(arg0->ptr, arg1->value, arg2->value, arg3->value, unpackTPixel(arg4->value));
+    return Nil;
+}
+
 // (tigrRGB <number> <number> <number>) -> <number>
 static Obj *prim_tigrRGB(void *root, Obj **env, Obj **list) {
     if (length(*list) != 3)
@@ -231,6 +255,7 @@ static void define_library(void *root, Obj **env) {
     add_primitive(root, env, "tigrClear", prim_tigrClear);
     add_primitive(root, env, "tigrLine", prim_tigrLine);
     add_primitive(root, env, "tigrCircle", prim_tigrCircle);
+    add_primitive(root, env, "tigrFillCircle", prim_tigrFillCircle);
     add_primitive(root, env, "tigrRGB", prim_tigrRGB);
     add_primitive(root, env, "tigrPrint", prim_tigrPrint);
     add_primitive(root, env, "tfont", prim_tfont);
