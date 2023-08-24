@@ -9,3 +9,8 @@
     (update (tigrTime))
     (tigrUpdate screen))
   (tigrUpdate screen))
+
+(defun step ()
+  (tigrTime)
+  (update (tigrTime))
+  (tigrUpdate screen))
