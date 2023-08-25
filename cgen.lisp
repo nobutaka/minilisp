@@ -13,7 +13,7 @@
 
 (defun ttype (type) (cdr (assq (de-nilable type) ttypes)))
 (defun ->value (type) (cdr (assq (de-nilable type) ->values)))
-(defun make-obj (type) (cdr (assq (de-nilable type) make-objs)))
+(defun make-obj (type) (aif (assq (de-nilable type) make-objs) (cdr it) 'make-obj))
 
 ;;;;;;;;;;
 

@@ -13,6 +13,7 @@
   (number tigrRGB number number number)                         ; TPixel tigrRGB(unsigned char r, unsigned char g, unsigned char b);
   (void tigrPrint pointer pointer number number number string)  ; void tigrPrint(Tigr *dest, TigrFont *font, int x, int y, TPixel color, const char *text, ...);
   (pointer tfont)                                               ; TigrFont *tfont;
+  (cell tigrMouse pointer)                                      ; void tigrMouse(Tigr *bmp, int *x, int *y, int *buttons);
   (number tigrKeyDown pointer number)                           ; int tigrKeyDown(Tigr *bmp, int key);
   (number tigrTime)                                             ; float tigrTime(void);
 ))
