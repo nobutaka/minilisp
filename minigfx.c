@@ -227,6 +227,25 @@ static Obj *prim_tfont(void *root, Obj **env, Obj **list) {
     return make_pointer(root, tfont);
 }
 
+// (tigrMouse <pointer>) -> <cell>
+static Obj *prim_tigrMouse(void *root, Obj **env, Obj **list) {
+    if (length(*list) != 1)
+        error("Malformed tigrMouse");
+    DEFINE2(tmp, cell);
+    *tmp = (*list)->car;
+    Obj *arg0 = eval(root, env, tmp);
+    if (arg0->type != TPOINTER)
+        error("Parameter #0 must be a pointer");
+    int x, y, b;
+    tigrMouse(arg0->ptr, &x, &y, &b);
+    *tmp = make_number(root, b);
+    *cell = cons(root, tmp, &Nil);
+    *tmp = make_number(root, y);
+    *cell = cons(root, tmp, cell);
+    *tmp = make_number(root, x);
+    return cons(root, tmp, cell);
+}
+
 // (tigrKeyDown <pointer> <number>) -> <number>
 static Obj *prim_tigrKeyDown(void *root, Obj **env, Obj **list) {
     if (length(*list) != 2)
@@ -259,6 +278,7 @@ static void define_library(void *root, Obj **env) {
     add_primitive(root, env, "tigrRGB", prim_tigrRGB);
     add_primitive(root, env, "tigrPrint", prim_tigrPrint);
     add_primitive(root, env, "tfont", prim_tfont);
+    add_primitive(root, env, "tigrMouse", prim_tigrMouse);
     add_primitive(root, env, "tigrKeyDown", prim_tigrKeyDown);
     add_primitive(root, env, "tigrTime", prim_tigrTime);
 }
