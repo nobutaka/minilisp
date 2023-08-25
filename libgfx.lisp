@@ -1,6 +1,7 @@
 (load "lib.lisp")
 
 (define tfont (tfont))
+(define TK_C 67)
 (define TK_ESCAPE 164)
 (define dt 0)
 
