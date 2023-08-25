@@ -2,7 +2,7 @@ UNAME_S = $(shell uname -s)
 CFLAGS = -std=gnu99 -Os -Wall
 ifeq ($(OS),Windows_NT)
 	LDFLAGS = -s
-	LDFLAGS_GFX = -lopengl32 -lgdi32 #-mwindows
+	LDFLAGS_GFX = -lopengl32 -lgdi32 #-mwindows // Uncomment if console is not needed.
 else ifeq ($(UNAME_S),Darwin)
 	LDFLAGS =
 	LDFLAGS_GFX = -framework OpenGL -framework Cocoa
