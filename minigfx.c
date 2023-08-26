@@ -287,7 +287,18 @@ static void define_library(void *root, Obj **env) {
 // Entry point
 //======================================================================
 
+// Returns true if the environment variable is defined and not the empty string.
+static bool getEnvFlag(char *name) {
+    char *val = getenv(name);
+    return val && val[0];
+}
+
 int main(int argc, char *argv[]) {
+    // Debug flags
+    debug_gc = getEnvFlag("MINILISP_DEBUG_GC");
+    always_gc = getEnvFlag("MINILISP_ALWAYS_GC");
+    bool prn = getEnvFlag("MINILISP_PRN");
+
     // Memory allocation
     memory = alloc_semispace();
 
@@ -310,5 +321,5 @@ int main(int argc, char *argv[]) {
     }
 
     // The main loop
-    return repl(root, env, input == stdin && isatty(STDIN_FILENO));
+    return repl(root, env, prn || (input == stdin && isatty(STDIN_FILENO)));
 }
