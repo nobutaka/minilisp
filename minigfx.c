@@ -195,6 +195,26 @@ static Obj *prim_tigrRGB(void *root, Obj **env, Obj **list) {
     return make_number(root, packTPixel(tigrRGB(arg0->value, arg1->value, arg2->value)));
 }
 
+// (tigrRGBA <number> <number> <number> <number>) -> <number>
+static Obj *prim_tigrRGBA(void *root, Obj **env, Obj **list) {
+    if (length(*list) != 4)
+        error("Malformed tigrRGBA");
+    Obj *args = eval_list(root, env, list);
+    Obj *arg0 = args->car;
+    Obj *arg1 = args->cdr->car;
+    Obj *arg2 = args->cdr->cdr->car;
+    Obj *arg3 = args->cdr->cdr->cdr->car;
+    if (arg0->type != TNUMBER)
+        error("Parameter #0 must be a number");
+    if (arg1->type != TNUMBER)
+        error("Parameter #1 must be a number");
+    if (arg2->type != TNUMBER)
+        error("Parameter #2 must be a number");
+    if (arg3->type != TNUMBER)
+        error("Parameter #3 must be a number");
+    return make_number(root, packTPixel(tigrRGBA(arg0->value, arg1->value, arg2->value, arg3->value)));
+}
+
 // (tigrPrint <pointer> <pointer> <number> <number> <number> <string>) -> <void>
 static Obj *prim_tigrPrint(void *root, Obj **env, Obj **list) {
     if (length(*list) != 6)
@@ -276,6 +296,7 @@ static void define_library(void *root, Obj **env) {
     add_primitive(root, env, "tigrCircle", prim_tigrCircle);
     add_primitive(root, env, "tigrFillCircle", prim_tigrFillCircle);
     add_primitive(root, env, "tigrRGB", prim_tigrRGB);
+    add_primitive(root, env, "tigrRGBA", prim_tigrRGBA);
     add_primitive(root, env, "tigrPrint", prim_tigrPrint);
     add_primitive(root, env, "tfont", prim_tfont);
     add_primitive(root, env, "tigrMouse", prim_tigrMouse);
