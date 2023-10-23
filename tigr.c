@@ -2125,6 +2125,7 @@ void tigrUpdate(Tigr* bmp) {
     if (!tigrGAPIBegin(bmp)) {
         tigrGAPIPresent(bmp, dw, dh);
         SwapBuffers(win->gl.dc);
+        Sleep(12);
         tigrGAPIEnd(bmp);
     }
 
