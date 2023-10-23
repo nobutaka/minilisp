@@ -2125,7 +2125,7 @@ void tigrUpdate(Tigr* bmp) {
     if (!tigrGAPIBegin(bmp)) {
         tigrGAPIPresent(bmp, dw, dh);
         SwapBuffers(win->gl.dc);
-        Sleep(12);
+        Sleep(12);  // Workaround: Reduce battery consumption.
         tigrGAPIEnd(bmp);
     }
 
