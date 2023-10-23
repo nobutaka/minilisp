@@ -1951,6 +1951,7 @@ TigrInternal* tigrInternal(Tigr* bmp) {
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
+#include <timeapi.h>
 
 #ifdef _MSC_VER
 #pragma comment(lib, "opengl32")  // glViewport
@@ -1958,6 +1959,7 @@ TigrInternal* tigrInternal(Tigr* bmp) {
 #pragma comment(lib, "user32")    // SetWindowLong
 #pragma comment(lib, "gdi32")     // ChoosePixelFormat
 #pragma comment(lib, "advapi32")  // RegSetValueEx
+#pragma comment(lib, "winmm")     // timeBeginPeriod
 #endif
 
 #define WIDGET_SCALE 3
@@ -2123,6 +2125,7 @@ void tigrUpdate(Tigr* bmp) {
     if (!tigrGAPIBegin(bmp)) {
         tigrGAPIPresent(bmp, dw, dh);
         SwapBuffers(win->gl.dc);
+        Sleep(12);  // Workaround: Reduce battery consumption.
         tigrGAPIEnd(bmp);
     }
 
@@ -2443,6 +2446,8 @@ Tigr* tigrWindow(int w, int h, const char* title, int flags) {
     wglSwapIntervalEXT_ = (PFNWGLSWAPINTERVALFARPROC_)wglGetProcAddress("wglSwapIntervalEXT");
     if (wglSwapIntervalEXT_)
         wglSwapIntervalEXT_(1);
+
+    timeBeginPeriod(1);
 
     return bmp;
 }
